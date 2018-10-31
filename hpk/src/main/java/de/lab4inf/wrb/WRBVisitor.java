@@ -1,5 +1,8 @@
 // Generated from de/lab4inf/wrb/WRB.g4 by ANTLR 4.7
 package de.lab4inf.wrb;
+
+	import org.antlr.v4.runtime.*;
+
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 /**
@@ -23,15 +26,27 @@ public interface WRBVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitStatement(WRBParser.StatementContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link WRBParser#mathFunc}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMathFunc(WRBParser.MathFuncContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link WRBParser#expr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitExpr(WRBParser.ExprContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link WRBParser#assign}.
+	 * Visit a parse tree produced by {@link WRBParser#assignVar}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitAssign(WRBParser.AssignContext ctx);
+	T visitAssignVar(WRBParser.AssignVarContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link WRBParser#assignFunc}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAssignFunc(WRBParser.AssignFuncContext ctx);
 }

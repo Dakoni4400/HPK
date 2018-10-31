@@ -1,5 +1,8 @@
 // Generated from de/lab4inf/wrb/WRB.g4 by ANTLR 4.7
 package de.lab4inf.wrb;
+
+	import org.antlr.v4.runtime.*;
+
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**
@@ -28,6 +31,16 @@ public interface WRBListener extends ParseTreeListener {
 	 */
 	void exitStatement(WRBParser.StatementContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link WRBParser#mathFunc}.
+	 * @param ctx the parse tree
+	 */
+	void enterMathFunc(WRBParser.MathFuncContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link WRBParser#mathFunc}.
+	 * @param ctx the parse tree
+	 */
+	void exitMathFunc(WRBParser.MathFuncContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link WRBParser#expr}.
 	 * @param ctx the parse tree
 	 */
@@ -38,13 +51,23 @@ public interface WRBListener extends ParseTreeListener {
 	 */
 	void exitExpr(WRBParser.ExprContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link WRBParser#assign}.
+	 * Enter a parse tree produced by {@link WRBParser#assignVar}.
 	 * @param ctx the parse tree
 	 */
-	void enterAssign(WRBParser.AssignContext ctx);
+	void enterAssignVar(WRBParser.AssignVarContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link WRBParser#assign}.
+	 * Exit a parse tree produced by {@link WRBParser#assignVar}.
 	 * @param ctx the parse tree
 	 */
-	void exitAssign(WRBParser.AssignContext ctx);
+	void exitAssignVar(WRBParser.AssignVarContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link WRBParser#assignFunc}.
+	 * @param ctx the parse tree
+	 */
+	void enterAssignFunc(WRBParser.AssignFuncContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link WRBParser#assignFunc}.
+	 * @param ctx the parse tree
+	 */
+	void exitAssignFunc(WRBParser.AssignFuncContext ctx);
 }

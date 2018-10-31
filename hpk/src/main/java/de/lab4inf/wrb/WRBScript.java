@@ -70,7 +70,7 @@ public class WRBScript implements Script {
      * @return set with the variables names
      */
 	public Set<String> getVariableNames() {
-		return parser.getMemory().keySet();
+		return parser.varMemory.keySet();
 	}
 		
 	/**
@@ -97,7 +97,9 @@ public class WRBScript implements Script {
      * @param name of the function to be unique
      * @param fct to add 
      */
-	public void setFunction(String name, Function fct) {}
+	public void setFunction(String name, Function fct) {
+		
+	}
 	
 	/**
      * Get all script known function names.
