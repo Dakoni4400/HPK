@@ -1,7 +1,7 @@
 // Generated from de/lab4inf/wrb/WRB.g4 by ANTLR 4.7
 package de.lab4inf.wrb;
 
-	import org.antlr.v4.runtime.*;
+	
 
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
@@ -25,18 +25,6 @@ public interface WRBVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitStatement(WRBParser.StatementContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link WRBParser#mathFunc}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitMathFunc(WRBParser.MathFuncContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link WRBParser#pow}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitPow(WRBParser.PowContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link WRBParser#expr}.
 	 * @param ctx the parse tree
@@ -80,6 +68,12 @@ public interface WRBVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitFactor(WRBParser.FactorContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link WRBParser#pow}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPow(WRBParser.PowContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link WRBParser#signedAtom}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -92,15 +86,39 @@ public interface WRBVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitAtom(WRBParser.AtomContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link WRBParser#function}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFunction(WRBParser.FunctionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link WRBParser#mathFunction}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMathFunction(WRBParser.MathFunctionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link WRBParser#min}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMin(WRBParser.MinContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link WRBParser#max}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMax(WRBParser.MaxContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link WRBParser#userFunction}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitUserFunction(WRBParser.UserFunctionContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link WRBParser#assignVar}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitAssignVar(WRBParser.AssignVarContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link WRBParser#assignFunc}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitAssignFunc(WRBParser.AssignFuncContext ctx);
 }
