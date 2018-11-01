@@ -32,7 +32,7 @@ mathFunc returns [double v]
 	;
 
 expr returns [double value]
-	: n=NO 											{$value = Double.parseDouble($n.text);}
+	: n=NO 											{$value = (double)Double.valueOf($n.text);}
 	| i=ID											{$value = varMemory.get($i.text);}			
 	| BRACKET_BEGIN exp=expr BRACKET_END 			{$value = $exp.value;}
 	| mul1=expr MUL mul2=expr						{$value = $mul1.value * $mul2.value;}
@@ -56,11 +56,31 @@ assignFunc
 // LEXER RULES
 //
 
-NO:				'-'?[0-9]+('.'[0-9]+)?;
+// Fragments 
 
-ID:				([A-Z] | [a-z] | '_')+([A-Z] | [a-z] | [0-9] | '_')*;
+fragment SIGN:		'-';
 
-PARAMS:			(ID',')*ID;
+fragment E:			('e' | 'E');
+
+fragment NUMBER:	('0' .. '9') + ('.' ('0' .. '9') +)?;
+
+//Tokens
+
+NO
+	: SIGN? SCIENTIFIC_NUMBER
+	;
+
+SCIENTIFIC_NUMBER
+   	: NUMBER (E ('+' | '-') NUMBER)?
+   	;
+
+ID
+	: ([A-Z] | [a-z] | '_')+([A-Z] | [a-z] | [0-9] | '_')*
+	;
+
+PARAMS
+	: (ID',')*ID
+	;
 
 ADD:			'+';
 MUL:			'*';

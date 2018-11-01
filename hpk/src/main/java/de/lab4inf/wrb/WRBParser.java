@@ -20,8 +20,8 @@ public class WRBParser extends Parser {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		NO=1, ID=2, PARAMS=3, ADD=4, MUL=5, DIV=6, SUB=7, BRACKET_BEGIN=8, BRACKET_END=9, 
-		ASSIGN=10, END=11, NEWLINE=12, WS=13;
+		NO=1, SCIENTIFIC_NUMBER=2, ID=3, PARAMS=4, ADD=5, MUL=6, DIV=7, SUB=8, 
+		BRACKET_BEGIN=9, BRACKET_END=10, ASSIGN=11, END=12, NEWLINE=13, WS=14;
 	public static final int
 		RULE_run = 0, RULE_statement = 1, RULE_mathFunc = 2, RULE_expr = 3, RULE_assignVar = 4, 
 		RULE_assignFunc = 5;
@@ -30,12 +30,12 @@ public class WRBParser extends Parser {
 	};
 
 	private static final String[] _LITERAL_NAMES = {
-		null, null, null, null, "'+'", "'*'", "'/'", "'-'", "'('", "')'", "'='", 
-		"';'"
+		null, null, null, null, null, "'+'", "'*'", "'/'", "'-'", "'('", "')'", 
+		"'='", "';'"
 	};
 	private static final String[] _SYMBOLIC_NAMES = {
-		null, "NO", "ID", "PARAMS", "ADD", "MUL", "DIV", "SUB", "BRACKET_BEGIN", 
-		"BRACKET_END", "ASSIGN", "END", "NEWLINE", "WS"
+		null, "NO", "SCIENTIFIC_NUMBER", "ID", "PARAMS", "ADD", "MUL", "DIV", 
+		"SUB", "BRACKET_BEGIN", "BRACKET_END", "ASSIGN", "END", "NEWLINE", "WS"
 	};
 	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
 
@@ -383,7 +383,7 @@ public class WRBParser extends Parser {
 				{
 				setState(35);
 				((ExprContext)_localctx).n = match(NO);
-				((ExprContext)_localctx).value =  Double.parseDouble((((ExprContext)_localctx).n!=null?((ExprContext)_localctx).n.getText():null));
+				((ExprContext)_localctx).value =  (double)Double.valueOf((((ExprContext)_localctx).n!=null?((ExprContext)_localctx).n.getText():null));
 				}
 				break;
 			case 2:
@@ -660,29 +660,29 @@ public class WRBParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\17_\4\2\t\2\4\3\t"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\20_\4\2\t\2\4\3\t"+
 		"\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\3\2\6\2\20\n\2\r\2\16\2\21\3\2\3\2"+
 		"\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\5\3!\n\3\3\4\3\4\3\5\3\5"+
 		"\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\5\5\62\n\5\3\5\3\5\3\5\3"+
 		"\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\7\5"+
 		"H\n\5\f\5\16\5K\13\5\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\5\6V\n\6\3\7"+
-		"\3\7\3\7\3\7\3\7\3\7\3\7\3\7\2\3\b\b\2\4\6\b\n\f\2\3\3\2\r\16\2d\2\17"+
+		"\3\7\3\7\3\7\3\7\3\7\3\7\3\7\2\3\b\b\2\4\6\b\n\f\2\3\3\2\16\17\2d\2\17"+
 		"\3\2\2\2\4 \3\2\2\2\6\"\3\2\2\2\b\61\3\2\2\2\nU\3\2\2\2\fW\3\2\2\2\16"+
 		"\20\5\4\3\2\17\16\3\2\2\2\20\21\3\2\2\2\21\17\3\2\2\2\21\22\3\2\2\2\22"+
 		"\23\3\2\2\2\23\24\b\2\1\2\24\3\3\2\2\2\25\26\5\b\5\2\26\27\t\2\2\2\27"+
 		"\30\b\3\1\2\30!\3\2\2\2\31\32\5\n\6\2\32\33\t\2\2\2\33!\3\2\2\2\34\35"+
-		"\5\f\7\2\35\36\t\2\2\2\36!\3\2\2\2\37!\7\16\2\2 \25\3\2\2\2 \31\3\2\2"+
+		"\5\f\7\2\35\36\t\2\2\2\36!\3\2\2\2\37!\7\17\2\2 \25\3\2\2\2 \31\3\2\2"+
 		"\2 \34\3\2\2\2 \37\3\2\2\2!\5\3\2\2\2\"#\3\2\2\2#\7\3\2\2\2$%\b\5\1\2"+
-		"%&\7\3\2\2&\62\b\5\1\2\'(\7\4\2\2(\62\b\5\1\2)*\7\n\2\2*+\5\b\5\2+,\7"+
-		"\13\2\2,-\b\5\1\2-\62\3\2\2\2./\5\6\4\2/\60\b\5\1\2\60\62\3\2\2\2\61$"+
-		"\3\2\2\2\61\'\3\2\2\2\61)\3\2\2\2\61.\3\2\2\2\62I\3\2\2\2\63\64\f\7\2"+
-		"\2\64\65\7\7\2\2\65\66\5\b\5\b\66\67\b\5\1\2\67H\3\2\2\289\f\6\2\29:\7"+
-		"\b\2\2:;\5\b\5\7;<\b\5\1\2<H\3\2\2\2=>\f\5\2\2>?\7\6\2\2?@\5\b\5\6@A\b"+
-		"\5\1\2AH\3\2\2\2BC\f\4\2\2CD\7\t\2\2DE\5\b\5\5EF\b\5\1\2FH\3\2\2\2G\63"+
-		"\3\2\2\2G8\3\2\2\2G=\3\2\2\2GB\3\2\2\2HK\3\2\2\2IG\3\2\2\2IJ\3\2\2\2J"+
-		"\t\3\2\2\2KI\3\2\2\2LM\7\4\2\2MN\7\f\2\2NO\5\b\5\2OP\b\6\1\2PV\3\2\2\2"+
-		"QR\7\4\2\2RS\7\f\2\2ST\7\4\2\2TV\b\6\1\2UL\3\2\2\2UQ\3\2\2\2V\13\3\2\2"+
-		"\2WX\7\4\2\2XY\7\n\2\2YZ\7\5\2\2Z[\7\13\2\2[\\\7\f\2\2\\]\5\b\5\2]\r\3"+
+		"%&\7\3\2\2&\62\b\5\1\2\'(\7\5\2\2(\62\b\5\1\2)*\7\13\2\2*+\5\b\5\2+,\7"+
+		"\f\2\2,-\b\5\1\2-\62\3\2\2\2./\5\6\4\2/\60\b\5\1\2\60\62\3\2\2\2\61$\3"+
+		"\2\2\2\61\'\3\2\2\2\61)\3\2\2\2\61.\3\2\2\2\62I\3\2\2\2\63\64\f\7\2\2"+
+		"\64\65\7\b\2\2\65\66\5\b\5\b\66\67\b\5\1\2\67H\3\2\2\289\f\6\2\29:\7\t"+
+		"\2\2:;\5\b\5\7;<\b\5\1\2<H\3\2\2\2=>\f\5\2\2>?\7\7\2\2?@\5\b\5\6@A\b\5"+
+		"\1\2AH\3\2\2\2BC\f\4\2\2CD\7\n\2\2DE\5\b\5\5EF\b\5\1\2FH\3\2\2\2G\63\3"+
+		"\2\2\2G8\3\2\2\2G=\3\2\2\2GB\3\2\2\2HK\3\2\2\2IG\3\2\2\2IJ\3\2\2\2J\t"+
+		"\3\2\2\2KI\3\2\2\2LM\7\5\2\2MN\7\r\2\2NO\5\b\5\2OP\b\6\1\2PV\3\2\2\2Q"+
+		"R\7\5\2\2RS\7\r\2\2ST\7\5\2\2TV\b\6\1\2UL\3\2\2\2UQ\3\2\2\2V\13\3\2\2"+
+		"\2WX\7\5\2\2XY\7\13\2\2YZ\7\6\2\2Z[\7\f\2\2[\\\7\r\2\2\\]\5\b\5\2]\r\3"+
 		"\2\2\2\b\21 \61GIU";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());

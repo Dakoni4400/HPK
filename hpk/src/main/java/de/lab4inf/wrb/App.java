@@ -27,10 +27,13 @@ public class App {
 		
 			CharStream inputStream = CharStreams.fromString(expr+'\n');
 			WRBLexer lexer = new WRBLexer(inputStream);
+			lexer.removeErrorListeners();
+			lexer.addErrorListener(ThrowingErrorListener.INSTANCE);
 			CommonTokenStream tokenStream = new CommonTokenStream(lexer);
 			
 			parser.setInputStream(tokenStream); // neuen Token-Stream an parser geben
-			
+			parser.removeErrorListeners();
+			parser.addErrorListener(ThrowingErrorListener.INSTANCE);
 			try {
 				r = parser.run(); // Token-Stream parsen
 				Double res = Double.valueOf(ob.visitRun(r));// Ergebnis ausgeben

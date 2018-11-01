@@ -27,9 +27,13 @@ public class WRBScript implements Script {
 	public double parse(String definition) throws IllegalArgumentException{
 		CharStream inputStream = CharStreams.fromString(definition+'\n');
 		WRBLexer lexer = new WRBLexer(inputStream);
+		lexer.removeErrorListeners();
+		lexer.addErrorListener(ThrowingErrorListener.INSTANCE);
 		CommonTokenStream tokenStream = new CommonTokenStream(lexer);
 		
 		parser.setTokenStream(tokenStream);
+		parser.removeErrorListeners();
+		parser.addErrorListener(ThrowingErrorListener.INSTANCE);
 		
 		try {
 			r = parser.run(); // Token-Stream parsen
@@ -51,9 +55,13 @@ public class WRBScript implements Script {
 	public double parse(InputStream defStream) throws IOException {
 		CharStream inputStream = CharStreams.fromStream(defStream);
 		WRBLexer lexer = new WRBLexer(inputStream);
+		lexer.removeErrorListeners();
+		lexer.addErrorListener(ThrowingErrorListener.INSTANCE);
 		CommonTokenStream tokenStream = new CommonTokenStream(lexer);
 		
 		parser.setTokenStream(tokenStream);
+		parser.removeErrorListeners();
+		parser.addErrorListener(ThrowingErrorListener.INSTANCE);
 		
 		try {
 			r = parser.run(); // Token-Stream parsen
