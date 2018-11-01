@@ -32,11 +32,65 @@ public interface WRBVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitMathFunc(WRBParser.MathFuncContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link WRBParser#pow}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPow(WRBParser.PowContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link WRBParser#expr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitExpr(WRBParser.ExprContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link WRBParser#exprAdd}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitExprAdd(WRBParser.ExprAddContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link WRBParser#exprSub}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitExprSub(WRBParser.ExprSubContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link WRBParser#term}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTerm(WRBParser.TermContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link WRBParser#termMul}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTermMul(WRBParser.TermMulContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link WRBParser#termDiv}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTermDiv(WRBParser.TermDivContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link WRBParser#factor}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFactor(WRBParser.FactorContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link WRBParser#signedAtom}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSignedAtom(WRBParser.SignedAtomContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link WRBParser#atom}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAtom(WRBParser.AtomContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link WRBParser#assignVar}.
 	 * @param ctx the parse tree
