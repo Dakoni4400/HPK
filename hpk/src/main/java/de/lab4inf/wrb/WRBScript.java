@@ -35,8 +35,12 @@ public class WRBScript implements Script {
 		parser.removeErrorListeners();
 		parser.addErrorListener(ThrowingErrorListener.INSTANCE);
 		
-		r = parser.run(); // Token-Stream parsen
-		lastResult = Double.valueOf(ob.visitRun(r)); // Ergebnis ausgeben
+		try {
+			r = parser.run(); // Token-Stream parsen
+			lastResult = Double.valueOf(ob.visitRun(r)); // Ergebnis ausgeben
+		} catch (Exception e) {
+			throw new IllegalArgumentException("Ungültige Eingabe!");
+		}
 
 		return lastResult;
 	}
@@ -59,8 +63,12 @@ public class WRBScript implements Script {
 		parser.removeErrorListeners();
 		parser.addErrorListener(ThrowingErrorListener.INSTANCE);
 		
-		r = parser.run(); // Token-Stream parsen
-		lastResult = Double.valueOf(ob.visitRun(r)); // Ergebnis ausgeben
+		try {
+			r = parser.run(); // Token-Stream parsen
+			lastResult = Double.valueOf(ob.visitRun(r)); // Ergebnis ausgeben
+		} catch (Exception e) {
+			throw new IllegalArgumentException("Ungültige Eingabe!");
+		}
 			
 		return lastResult;
 	}
