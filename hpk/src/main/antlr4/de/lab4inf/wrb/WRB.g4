@@ -20,7 +20,7 @@ run returns [double v]
 	: s=statement+									{$v = $s.v;}
 	;
 
-statement returns [double v]
+statement returns [double v] 
 	: exp=expr (NEWLINE | END)						{$v = $exp.v;}
 	| a=assignVar (NEWLINE | END)					{$v = $a.v;}
 	| assignFunc (NEWLINE | END)						
@@ -40,8 +40,8 @@ pow returns [double v]
 
 expr returns [double v]
 	: t=term										{$v = $t.v;}
-	| t1=term a=exprAdd								{$v = $t1.v + $a.v;}
-	| t1=term s=exprSub								{$v = $t1.v - $s.v;}
+	| t1=expr a=exprAdd								{$v = $t1.v + $a.v;}
+	| t1=expr s=exprSub								{$v = $t1.v - $s.v;}
 	;
 
 exprAdd returns [double v]
@@ -54,8 +54,8 @@ exprSub returns [double v]
 	
 term returns [double v]
 	: f=factor										{$v = $f.v;}
-	| f1=factor m=termMul							{$v = $f1.v * $m.v;}
-	| f1=factor d=termDiv							{$v = $f1.v / $d.v;}
+	| f1=term m=termMul							{$v = $f1.v * $m.v;}
+	| f1=term d=termDiv							{$v = $f1.v / $d.v;}
 	;
 
 termMul returns [double v]
