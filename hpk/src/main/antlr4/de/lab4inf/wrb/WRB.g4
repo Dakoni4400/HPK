@@ -16,19 +16,21 @@ options{
 // PARSER RULES
 //
 
-run returns [double v]
-	: s=statement+									{$v = $s.v;}
+run
+	: s=statement+
 	;
 
-statement returns [double v] 
-	: exp=expr (NEWLINE | END)						{$v = $exp.v;}
-	| a=assignVar (NEWLINE | END)					{$v = $a.v;}						
+statement returns [double v]
+	: exp=expr (NEWLINE | END)						{$v = $exp.v;}										
+	| a=assignVar (NEWLINE | END)					{$v = $a.v;}
+	| f=assignFunc (NEWLINE | END)					{$v = $f.v;}	
 	;
 
 expr returns [double v]
 	: t=term										{$v = $t.v;}
 	| t1=expr a=exprAdd								{$v = $t1.v + $a.v;}
 	| t1=expr s=exprSub								{$v = $t1.v - $s.v;}
+	| evalUserFunc
 	;
 
 exprAdd returns [double v]
@@ -123,6 +125,36 @@ max returns [double v]
 	| MAX '(' e1=expr ',' e2=expr ',' e3=expr ')'	{$v = Math.max(Math.max($e1.v,$e2.v),$e3.v);}
 	| MAX '(' e1=expr ',' e2=expr ',' e3=expr ',' e4=expr ')'
 	{$v = Math.max(Math.max($e1.v,$e2.v),Math.max($e3.v,$e4.v));}
+	;
+	
+evalUserFunc
+	: i=ID '(' p=evalParams ')'
+	;
+	
+evalParams
+	: //params
+	SCI_NO(','SCI_NO)*
+	;
+
+assignFunc returns [double v]
+	: 
+	i=ID '(' p=params ')'
+	{
+		//Putting all params in varMemory to avoid NullPointerException
+		String p = $p.text;
+		String[] params = p.split(",");
+		for(String param : params) {
+			varMemory.put(param, 0.);
+		}
+	}
+	ASSIGN e=expr 
+	{
+		$v = 1;
+	}					
+	;
+
+params 
+	: ID(','ID)*
 	;
 	
 userFunction:;

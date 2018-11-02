@@ -110,6 +110,30 @@ public interface WRBVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitMax(WRBParser.MaxContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link WRBParser#evalUserFunc}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitEvalUserFunc(WRBParser.EvalUserFuncContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link WRBParser#evalParams}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitEvalParams(WRBParser.EvalParamsContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link WRBParser#assignFunc}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAssignFunc(WRBParser.AssignFuncContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link WRBParser#params}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitParams(WRBParser.ParamsContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link WRBParser#userFunction}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
