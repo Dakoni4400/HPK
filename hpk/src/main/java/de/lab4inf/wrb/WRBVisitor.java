@@ -1,8 +1,5 @@
 // Generated from de/lab4inf/wrb/WRB.g4 by ANTLR 4.7
 package de.lab4inf.wrb;
-
-	
-
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 /**

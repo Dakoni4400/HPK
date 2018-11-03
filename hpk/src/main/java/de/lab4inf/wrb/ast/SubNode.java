@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 public class SubNode implements AstNode {
 	ArrayList<AstNode> children;
-	ArrayList<String> parameters;
+	ArrayList<String> parameters = new ArrayList<>();
 	
 	public SubNode(ArrayList<AstNode> children, ArrayList<String> parameters) {
 		this.children = children;
@@ -23,6 +23,9 @@ public class SubNode implements AstNode {
 	
 	@Override
 	public double eval(HashMap<String, Double> scope) {
+		if(children.size() == 1) {
+			return -1. * children.get(0).eval(scope);
+		}
 		System.out.println("Eval SubNode");
 		double[] subExpressions = new double[children.size()];
 		

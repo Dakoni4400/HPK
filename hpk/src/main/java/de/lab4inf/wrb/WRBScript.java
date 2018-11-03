@@ -78,7 +78,7 @@ public class WRBScript implements Script {
      * @return set with the variables names
      */
 	public Set<String> getVariableNames() {
-		return parser.varMemory.keySet();
+		return ob.varMemory.keySet();
 	}
 		
 	/**
@@ -106,7 +106,7 @@ public class WRBScript implements Script {
      * @param fct to add 
      */
 	public void setFunction(String name, Function fct) {
-		
+		ob.funcMemory.put(name, fct);
 	}
 	
 	/**
@@ -114,7 +114,7 @@ public class WRBScript implements Script {
      * @return set with the function names
      */
 	public Set<String> getFunctionNames() {
-		return new HashSet<String>();
+		return ob.funcMemory.keySet();
 	}
 	
 	/**
@@ -122,7 +122,10 @@ public class WRBScript implements Script {
      * @param name of the function
      * @return an implementation
      */
-	public Function getFunction(String name) {
-		return null;
+	public Function getFunction(String name) throws IllegalArgumentException{
+		if(ob.funcMemory.containsKey(name))
+			return ob.funcMemory.get(name);
+		else
+			throw new IllegalArgumentException("Funktion existiert nicht!");
 	}
 }

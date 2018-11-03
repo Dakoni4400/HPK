@@ -4,14 +4,6 @@ options{
 	language = Java;
 }
 
-@parser::header{
-	
-}
-
-@parser::members{
-	java.util.HashMap<String, Double> varMemory = new java.util.HashMap<String, Double>();
-}
-
 //
 // PARSER RULES
 //
@@ -20,111 +12,104 @@ run
 	: s=statement+
 	;
 
-statement returns [double v]
-	: exp=expr (NEWLINE | END)						{$v = $exp.v;}										
-	| a=assignVar (NEWLINE | END)					{$v = $a.v;}
-	| f=assignFunc (NEWLINE | END)					{$v = $f.v;}	
+statement 
+	: exp=expr (NEWLINE | END)																
+	| a=assignVar (NEWLINE | END)					
+	| f=assignFunc (NEWLINE | END)						
 	;
 
-expr returns [double v]
-	: t=term										{$v = $t.v;}
-	| t1=expr a=exprAdd								{$v = $t1.v + $a.v;}
-	| t1=expr s=exprSub								{$v = $t1.v - $s.v;}
+expr 
+	: t=term										
+	| t1=expr a=exprAdd								
+	| t1=expr s=exprSub								
+	;
+
+exprAdd 
+	: ADD t=term									
+	;
+	
+exprSub 
+	: SUB t=term									
+	;
+	
+term 
+	: f=factor									
+	| f1=term m=termMul								
+	| f1=term d=termDiv								
+	;
+
+termMul
+	: MUL f=factor									
+	;
+	
+termDiv 
+	: DIV f=factor									
+	;
+	
+factor
+	: a=signedAtom									
+	| b=signedAtom p=pow							
+	;
+
+pow
+	: POW factor							
+ 	;
+
+signedAtom
+   	: ADD a=atom									
+   	| SUB a=atom									
+   	| a=atom										
+	;
+
+atom
+   	: n=SCI_NO										
+   	| '(' e=expr ')'								
+   	| f=function									
+   	| i=ID											
+   	;	
+   	
+function
+	: m=mathFunction								
 	| evalUserFunc
 	;
 
-exprAdd returns [double v]
-	: ADD t=term									{$v = $t.v;}
-	;
-	
-exprSub returns [double v]
-	: SUB t=term									{$v = $t.v;}
-	;
-	
-term returns [double v]
-	: f=factor										{$v = $f.v;}
-	| f1=term m=termMul								{$v = $f1.v * $m.v;}
-	| f1=term d=termDiv								{$v = $f1.v / $d.v;}
-	;
-
-termMul returns [double v]
-	: MUL f=factor									{$v = $f.v;}
-	;
-	
-termDiv returns [double v]
-	: DIV f=factor									{$v = $f.v;}
-	;
-	
-factor returns [double v]
-	: a=signedAtom									{$v = $a.v;}
-	| b=signedAtom p=pow							{$v = Math.pow($b.v, $p.v);}
-	;
-
-pow returns [double v]
-	: POW '(' e=expr ')'							{$v = $e.v;}
-	| POW n=SCI_NO p=pow							{$v = Math.pow(Double.parseDouble($n.text), $p.v);}
-	| POW i=ID p=pow								{$v = Math.pow(varMemory.get($i.text), $p.v);}
-	| POW n=SCI_NO									{$v = Double.parseDouble($n.text);}
-	| POW i=ID										{$v = varMemory.get($i.text);}
- 	;
-
-signedAtom returns [double v]
-   	: '+' a=atom									{$v = $a.v;}
-   	| '-' a=atom									{$v = -1*$a.v;}
-   	| a=atom										{$v = $a.v;}
+mathFunction
+	: ABS '(' e=expr ')'							
+	| ACOS '(' e=expr ')'							
+	| ASIN '(' e=expr ')'							
+	| ATAN '(' e=expr ')'							
+	| CBRT '(' e=expr ')'							
+	| CEIL '(' e=expr ')'							
+	| COS '(' e=expr ')'							
+	| COSH '(' e=expr ')'							
+	| EXP '(' e=expr ')'							
+	| EXPM1 '(' e=expr ')'							
+	| FLOOR '(' e=expr ')'							
+	| (LN| LOGE) '(' e=expr ')'						
+	| (LOG | LOG10) '(' e=expr ')'					
+	| (LOG2 | LD | LB) '(' e=expr ')'				
+	| a=max											
+	| i=min											
+	| POWFUNC '('e1=expr','e2=expr')'				
+	| RINT '(' e=expr ')'							
+	| SIGNUM '(' e=expr ')'							
+	| SIN '(' e=expr ')'							
+	| SINH '(' e=expr ')'							
+	| SQRT '(' e=expr ')'							
+	| TAN '(' e=expr ')'							
+	| TANH '(' e=expr ')'							
 	;
 
-atom returns [double v]
-   	: n=SCI_NO										{$v = Double.parseDouble($n.text);}
-   	| '(' e=expr ')'								{$v = $e.v;}
-   	| f=function									{$v = $f.v;}
-   	| i=ID											{$v = varMemory.get($i.text);}
-   	;	
-   	
-function returns [double v]
-	: m=mathFunction								{$v = $m.v;}
-	;
-
-mathFunction returns [double v]
-	: ABS '(' e=expr ')'							{$v = Math.abs($e.v);}
-	| ACOS '(' e=expr ')'							{$v = Math.acos($e.v);}
-	| ASIN '(' e=expr ')'							{$v = Math.asin($e.v);}
-	| ATAN '(' e=expr ')'							{$v = Math.atan($e.v);}
-	| CBRT '(' e=expr ')'							{$v = Math.cbrt($e.v);}
-	| CEIL '(' e=expr ')'							{$v = Math.ceil($e.v);}
-	| COS '(' e=expr ')'							{$v = Math.cos($e.v);}
-	| COSH '(' e=expr ')'							{$v = Math.cosh($e.v);}
-	| EXP '(' e=expr ')'							{$v = Math.exp($e.v);}
-	| EXPM1 '(' e=expr ')'							{$v = Math.expm1($e.v);}
-	| FLOOR '(' e=expr ')'							{$v = Math.floor($e.v);}
-	| (LN| LOGE) '(' e=expr ')'						{$v = Math.log($e.v);}
-	| (LOG | LOG10) '(' e=expr ')'					{$v = Math.log10($e.v);}
-	| (LOG2 | LD | LB) '(' e=expr ')'				{$v = Math.log($e.v)/Math.log(2);}
-	| a=max											{$v = $a.v;}
-	| i=min											{$v = $i.v;}
-	| POWFUNC '('e1=expr','e2=expr')'				{$v = Math.pow($e1.v,$e2.v);}
-	| RINT '(' e=expr ')'							{$v = Math.rint($e.v);}
-	| ROUND '(' e=expr ')'							{$v = Math.round($e.v);}
-	| SIGNUM '(' e=expr ')'							{$v = Math.signum($e.v);}
-	| SIN '(' e=expr ')'							{$v = Math.sin($e.v);}
-	| SINH '(' e=expr ')'							{$v = Math.sinh($e.v);}
-	| SQRT '(' e=expr ')'							{$v = Math.sqrt($e.v);}
-	| TAN '(' e=expr ')'							{$v = Math.tan($e.v);}
-	| TANH '(' e=expr ')'							{$v = Math.tanh($e.v);}
-	;
-
-min returns [double v]
-	: MIN '(' e1=expr ',' e2=expr ')'				{$v = Math.min($e1.v,$e2.v);}
-	| MIN '(' e1=expr ',' e2=expr ',' e3=expr ')'	{$v = Math.min(Math.min($e1.v,$e2.v),$e3.v);}
+min 
+	: MIN '(' e1=expr ',' e2=expr ')'				
+	| MIN '(' e1=expr ',' e2=expr ',' e3=expr ')'	
 	| MIN '(' e1=expr ',' e2=expr ',' e3=expr ',' e4=expr ')'
-	{$v = Math.min(Math.min($e1.v,$e2.v),Math.min($e3.v,$e4.v));}
 	;
 	
-max returns [double v]
-	: MAX '(' e1=expr ',' e2=expr ')'				{$v = Math.max($e1.v,$e2.v);}
-	| MAX '(' e1=expr ',' e2=expr ',' e3=expr ')'	{$v = Math.max(Math.max($e1.v,$e2.v),$e3.v);}
+max 
+	: MAX '(' e1=expr ',' e2=expr ')'				
+	| MAX '(' e1=expr ',' e2=expr ',' e3=expr ')'	
 	| MAX '(' e1=expr ',' e2=expr ',' e3=expr ',' e4=expr ')'
-	{$v = Math.max(Math.max($e1.v,$e2.v),Math.max($e3.v,$e4.v));}
 	;
 	
 evalUserFunc
@@ -132,25 +117,12 @@ evalUserFunc
 	;
 	
 evalParams
-	: //params
-	SCI_NO(','SCI_NO)*
+	: p=params
+	| SCI_NO(','SCI_NO)*
 	;
 
-assignFunc returns [double v]
-	: 
-	i=ID '(' p=params ')'
-	{
-		//Putting all params in varMemory to avoid NullPointerException
-		String p = $p.text;
-		String[] params = p.split(",");
-		for(String param : params) {
-			varMemory.put(param, 0.);
-		}
-	}
-	ASSIGN e=expr 
-	{
-		$v = 1;
-	}					
+assignFunc
+	: i=ID '(' p=params ')' ASSIGN e=expr 					
 	;
 
 params 
@@ -159,9 +131,9 @@ params
 	
 userFunction:;
 
-assignVar returns [double v]
-	: i=ID ASSIGN exp=expr							{varMemory.put($i.text, $exp.v); $v = $exp.v;}
-	| i=ID ASSIGN j=ID								{varMemory.put($i.text, varMemory.get($j.text)); $v = varMemory.get($j.text);}
+assignVar 
+	: i=ID ASSIGN exp=expr							
+	| i=ID ASSIGN j=ID								
 	;
 	
 //	
@@ -197,7 +169,8 @@ fragment X : [xX];
 fragment Y : [yY];
 fragment Z : [zZ];
 
-fragment NUMBER:	[0-9]+('.'[0-9]+)?;	
+fragment NUMBER:		[0-9]+('.'[0-9]+)?;	
+fragment LAZY_FLOAT: 	'.'[0-9]+;
 
 // Token
 
@@ -239,7 +212,7 @@ SQRT:			S Q R T;
 TAN:			T A N;
 TANH:			T A N H;
 
-SCI_NO:			NUMBER (E ('+' | '-') NUMBER)?;
+SCI_NO:			(NUMBER (E ('+' | '-') NUMBER)?) | LAZY_FLOAT;
 
 DIGIT:			[0-9]+;
 

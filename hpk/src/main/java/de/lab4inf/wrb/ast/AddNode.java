@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 public class AddNode implements AstNode {
 	ArrayList<AstNode> children;
-	ArrayList<String> parameters;
+	ArrayList<String> parameters = new ArrayList<>();
 	
 	public AddNode(ArrayList<AstNode> children, ArrayList<String> parameters) {
 		this.children = children;
