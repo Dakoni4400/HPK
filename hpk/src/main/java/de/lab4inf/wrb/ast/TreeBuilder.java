@@ -12,7 +12,6 @@ import de.lab4inf.wrb.WRBParser;
  */
 public final class TreeBuilder {
 	public static AstNode buildTree(WRBParser.ExprContext ctx) {
-		System.out.println("Start building tree");
 		if(ctx.exprAdd() != null) {
 			AstNode left = buildTree(ctx.expr());
 			AddNode right = buildAddNode(ctx.exprAdd());
@@ -33,7 +32,6 @@ public final class TreeBuilder {
 	}
 	
 	public static AddNode buildAddNode(WRBParser.ExprAddContext ctx) {
-		System.out.println("Building AddNode");
 		AstNode term = buildTerm(ctx.term());
 		ArrayList<AstNode> child = new ArrayList<>();
 		child.add(term);
@@ -41,7 +39,6 @@ public final class TreeBuilder {
 	}
 	
 	public static SubNode buildSubNode(WRBParser.ExprSubContext ctx) {
-		System.out.println("Building SubNode");
 		AstNode term = buildTerm(ctx.term());
 		ArrayList<AstNode> child = new ArrayList<>();
 		child.add(term);
@@ -49,7 +46,6 @@ public final class TreeBuilder {
 	}
 	
 	public static AstNode buildTerm(WRBParser.TermContext ctx) {
-		System.out.println("Building Term");
 		if(ctx.termMul() != null) {
 			AstNode left = buildTerm(ctx.term());
 			MulNode right = buildMulNode(ctx.termMul());
@@ -70,7 +66,6 @@ public final class TreeBuilder {
 	}
 	
 	public static MulNode buildMulNode(WRBParser.TermMulContext ctx) {
-		System.out.println("Building MulNode");
 		AstNode factor = buildFactor(ctx.factor());
 		ArrayList<AstNode> child = new ArrayList<>();
 		child.add(factor);
@@ -78,7 +73,6 @@ public final class TreeBuilder {
 	}
 	
 	public static DivNode buildDivNode(WRBParser.TermDivContext ctx) {
-		System.out.println("Building DivNode");
 		AstNode factor = buildFactor(ctx.factor());
 		ArrayList<AstNode> child = new ArrayList<>();
 		child.add(factor);
@@ -86,7 +80,6 @@ public final class TreeBuilder {
 	}
 	
 	public static AstNode buildFactor(WRBParser.FactorContext ctx) {
-		System.out.println("Building Factor");
 		if(ctx.pow() != null) {
 			AstNode left = buildTerminalNode(ctx.signedAtom());
 			PowNode right = buildPowNode(ctx.pow());
@@ -99,7 +92,6 @@ public final class TreeBuilder {
 	}
 	
 	public static PowNode buildPowNode(WRBParser.PowContext ctx) {
-		System.out.println("Building PowNode");
 		AstNode node = buildFactor(ctx.factor());
 		ArrayList<AstNode> child = new ArrayList<>();
 		child.add(node);
@@ -107,7 +99,6 @@ public final class TreeBuilder {
 	}
 	
 	public static AstNode buildTerminalNode(WRBParser.SignedAtomContext ctx) {
-		System.out.println("Building SignedTerminal");
 		if(ctx.SUB() != null) {
 			AstNode node = buildTerminalNode(ctx.atom());
 			ArrayList<AstNode> child = new ArrayList<>();
@@ -119,12 +110,9 @@ public final class TreeBuilder {
 	}
 	
 	public static AstNode buildTerminalNode(WRBParser.AtomContext ctx) {
-		System.out.println("Building TerminalNode");
 		if(ctx.function() != null) {
 			//Adding user Function Nodes
-			System.out.println("Building Function");
 			if(ctx.function().evalUserFunc() != null) {
-				System.out.println("Building UserFunction");
 				return new FuncNode(WRBObserver.getInstance().getFuncMemory().get(ctx.function().evalUserFunc().ID().getText()));
 			} 
 			// Adding lang.Math Nodes
