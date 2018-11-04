@@ -159,10 +159,8 @@ public final class TreeBuilder {
 			ArrayList<String> param = new ArrayList<>();
 			param.add(ctx.ID().getText());
 			return new TerminalNode(param);
-		} else /*(ctx.SCI_NO() != null)*/ {
+		} else {
 			return new TerminalNode(Double.parseDouble(ctx.SCI_NO().getText()));
-		} //else {
-			// lang.Math Funktionen
-		//}
+		}
 	}
 }
