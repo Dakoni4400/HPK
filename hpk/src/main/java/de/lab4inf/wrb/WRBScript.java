@@ -11,7 +11,7 @@ import org.antlr.v4.runtime.CommonTokenStream;
 public class WRBScript implements Script {
 	private WRBParser.RunContext r;
 	private WRBParser parser = new WRBParser(null);
-	private final WRBObserver ob = WRBObserver.getInstance();
+	private final WRBObserver ob = new WRBObserver();
 	
 	private static double lastResult;
 	

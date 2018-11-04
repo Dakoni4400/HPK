@@ -7,18 +7,11 @@ import java.util.List;
 import de.lab4inf.wrb.ast.TreeBuilder;
 
 public class WRBObserver extends WRBBaseVisitor<Double> {
-	
-	private static WRBObserver INSTANCE;
-	
+
+	private final TreeBuilder builder = new TreeBuilder(this);
 	
 	HashMap<String, Double> varMemory = new HashMap<>();
 	HashMap<String, Function> funcMemory = new HashMap<>();
-	
-	public static WRBObserver getInstance() {
-		if(INSTANCE == null) 
-			INSTANCE = new WRBObserver();
-		return INSTANCE;
-	}
 	
 	public HashMap<String, Double> getVarMemory() {
 		return varMemory;
@@ -239,7 +232,7 @@ public class WRBObserver extends WRBBaseVisitor<Double> {
 				
 		}
 		
-		funcMemory.put(id, new WRBFunction(TreeBuilder.buildTree(ctx.expr()), params));
+		funcMemory.put(id, new WRBFunction(builder.buildTree(ctx.expr()), params));
 		
 		varMemory.putAll(varMemoryTemp);
 		

@@ -10,8 +10,14 @@ import de.lab4inf.wrb.WRBParser;
  * @author Till Kobbe
  *
  */
-public final class TreeBuilder {
-	public static AstNode buildTree(WRBParser.ExprContext ctx) {
+public class TreeBuilder {
+	WRBObserver ob;
+	
+	public TreeBuilder(WRBObserver ob) {
+		this.ob = ob;
+	}
+	
+	public AstNode buildTree(WRBParser.ExprContext ctx) {
 		if(ctx.exprAdd() != null) {
 			AstNode left = buildTree(ctx.expr());
 			AddNode right = buildAddNode(ctx.exprAdd());
@@ -31,21 +37,21 @@ public final class TreeBuilder {
 		}
 	}
 	
-	public static AddNode buildAddNode(WRBParser.ExprAddContext ctx) {
+	public AddNode buildAddNode(WRBParser.ExprAddContext ctx) {
 		AstNode term = buildTerm(ctx.term());
 		ArrayList<AstNode> child = new ArrayList<>();
 		child.add(term);
 		return new AddNode(child, term.getParams());
 	}
 	
-	public static SubNode buildSubNode(WRBParser.ExprSubContext ctx) {
+	public SubNode buildSubNode(WRBParser.ExprSubContext ctx) {
 		AstNode term = buildTerm(ctx.term());
 		ArrayList<AstNode> child = new ArrayList<>();
 		child.add(term);
 		return new SubNode(child, term.getParams());
 	}
 	
-	public static AstNode buildTerm(WRBParser.TermContext ctx) {
+	public AstNode buildTerm(WRBParser.TermContext ctx) {
 		if(ctx.termMul() != null) {
 			AstNode left = buildTerm(ctx.term());
 			MulNode right = buildMulNode(ctx.termMul());
@@ -65,21 +71,21 @@ public final class TreeBuilder {
 		}
 	}
 	
-	public static MulNode buildMulNode(WRBParser.TermMulContext ctx) {
+	public MulNode buildMulNode(WRBParser.TermMulContext ctx) {
 		AstNode factor = buildFactor(ctx.factor());
 		ArrayList<AstNode> child = new ArrayList<>();
 		child.add(factor);
 		return new MulNode(child, factor.getParams());
 	}
 	
-	public static DivNode buildDivNode(WRBParser.TermDivContext ctx) {
+	public DivNode buildDivNode(WRBParser.TermDivContext ctx) {
 		AstNode factor = buildFactor(ctx.factor());
 		ArrayList<AstNode> child = new ArrayList<>();
 		child.add(factor);
 		return new DivNode(child, factor.getParams());
 	}
 	
-	public static AstNode buildFactor(WRBParser.FactorContext ctx) {
+	public AstNode buildFactor(WRBParser.FactorContext ctx) {
 		if(ctx.pow() != null) {
 			AstNode left = buildTerminalNode(ctx.signedAtom());
 			PowNode right = buildPowNode(ctx.pow());
@@ -91,14 +97,14 @@ public final class TreeBuilder {
 		return buildTerminalNode(ctx.signedAtom());
 	}
 	
-	public static PowNode buildPowNode(WRBParser.PowContext ctx) {
+	public PowNode buildPowNode(WRBParser.PowContext ctx) {
 		AstNode node = buildFactor(ctx.factor());
 		ArrayList<AstNode> child = new ArrayList<>();
 		child.add(node);
 		return new PowNode(child, node.getParams());
 	}
 	
-	public static AstNode buildTerminalNode(WRBParser.SignedAtomContext ctx) {
+	public AstNode buildTerminalNode(WRBParser.SignedAtomContext ctx) {
 		if(ctx.SUB() != null) {
 			AstNode node = buildTerminalNode(ctx.atom());
 			ArrayList<AstNode> child = new ArrayList<>();
@@ -109,11 +115,11 @@ public final class TreeBuilder {
 		
 	}
 	
-	public static AstNode buildTerminalNode(WRBParser.AtomContext ctx) {
+	public AstNode buildTerminalNode(WRBParser.AtomContext ctx) {
 		if(ctx.function() != null) {
 			//Adding user Function Nodes
 			if(ctx.function().evalUserFunc() != null) {
-				return new FuncNode(WRBObserver.getInstance().getFuncMemory().get(ctx.function().evalUserFunc().ID().getText()));
+				return new FuncNode(ob.getFuncMemory().get(ctx.function().evalUserFunc().ID().getText()));
 			} 
 			// Adding lang.Math Nodes
 			if(ctx.function().mathFunction() != null) {
@@ -153,8 +159,8 @@ public final class TreeBuilder {
 		if(ctx.expr() != null) {
 			return buildTree(ctx.expr());
 		} else if(ctx.ID() != null) {
-			if(WRBObserver.getInstance().getVarMemory().containsKey(ctx.ID().getText())) {
-				return new TerminalNode(WRBObserver.getInstance().getVarMemory().get(ctx.ID().getText()));
+			if(ob.getVarMemory().containsKey(ctx.ID().getText())) {
+				return new TerminalNode(ob.getVarMemory().get(ctx.ID().getText()));
 			}
 			ArrayList<String> param = new ArrayList<>();
 			param.add(ctx.ID().getText());

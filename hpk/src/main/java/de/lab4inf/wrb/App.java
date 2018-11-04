@@ -19,7 +19,7 @@ public class App {
 		
 		//Parser und Observer erstellen
 		WRBParser parser = new WRBParser(null);
-		WRBObserver ob = WRBObserver.getInstance();
+		WRBObserver ob = new WRBObserver();
 		
 		WRBParser.RunContext r;
 		
