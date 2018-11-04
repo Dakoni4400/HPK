@@ -1370,7 +1370,6 @@ public abstract class AbstractScriptTest {
         timeCached = System.nanoTime();
         x = rnd()/2;
         for (int k = 0; k<MAX_LOOPS; k++ ) {
-        	System.out.println("loop");
             fct.eval(x);
         }
         timeCached -= System.nanoTime();

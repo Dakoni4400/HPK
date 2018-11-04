@@ -23,7 +23,6 @@ public class AtanNode implements AstNode {
 	
 	@Override
 	public double eval(HashMap<String, Double> scope) {
-		System.out.println("Eval SinNode");
 		return Math.atan(children.get(0).eval(scope));
 	}
 }

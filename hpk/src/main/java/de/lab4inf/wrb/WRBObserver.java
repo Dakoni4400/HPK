@@ -43,7 +43,6 @@ public class WRBObserver extends WRBBaseVisitor<Double> {
 	
 	@Override
 	public Double visitExpr(WRBParser.ExprContext ctx) {
-		System.out.println("Visiting Expression");
 		/*if(ctx.evalUserFunc() != null)
 			return visit(ctx.evalUserFunc());*/
 		if(ctx.term() != null)
@@ -226,7 +225,6 @@ public class WRBObserver extends WRBBaseVisitor<Double> {
 	
 	@Override
 	public Double visitAssignFunc(WRBParser.AssignFuncContext ctx) {
-		System.out.println("Visiting AssignFunc");
 		String id = ctx.i.getText();
 		String p = ctx.p.getText();
 		String[] params = p.split(",");

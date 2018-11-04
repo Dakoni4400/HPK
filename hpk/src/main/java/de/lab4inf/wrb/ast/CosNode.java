@@ -23,7 +23,6 @@ public class CosNode implements AstNode {
 	
 	@Override
 	public double eval(HashMap<String, Double> scope) {
-		System.out.println("Eval SinNode");
 		return Math.cos(children.get(0).eval(scope));
 	}
 }
