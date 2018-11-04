@@ -3,11 +3,11 @@ package de.lab4inf.wrb.ast;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class PowNode implements AstNode {
+public class CosNode implements AstNode {
 	ArrayList<AstNode> children;
 	ArrayList<String> parameters = new ArrayList<>();
 	
-	public PowNode(ArrayList<AstNode> children, ArrayList<String> parameters) {
+	public CosNode(ArrayList<AstNode> children, ArrayList<String> parameters) {
 		this.children = children;
 		this.parameters = parameters;
 	}
@@ -23,6 +23,7 @@ public class PowNode implements AstNode {
 	
 	@Override
 	public double eval(HashMap<String, Double> scope) {
-		return Math.pow(children.get(1).eval(scope), children.get(0).eval(scope));
+		System.out.println("Eval SinNode");
+		return Math.cos(children.get(0).eval(scope));
 	}
 }

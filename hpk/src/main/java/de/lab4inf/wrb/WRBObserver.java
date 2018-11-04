@@ -1,14 +1,33 @@
 package de.lab4inf.wrb;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 
 import de.lab4inf.wrb.ast.TreeBuilder;
 
 public class WRBObserver extends WRBBaseVisitor<Double> {
 	
+	private static WRBObserver INSTANCE;
+	
+	
 	HashMap<String, Double> varMemory = new HashMap<>();
 	HashMap<String, Function> funcMemory = new HashMap<>();
 	
+	public static WRBObserver getInstance() {
+		if(INSTANCE == null) 
+			INSTANCE = new WRBObserver();
+		return INSTANCE;
+	}
+	
+	public HashMap<String, Double> getVarMemory() {
+		return varMemory;
+	}
+
+	public HashMap<String, Function> getFuncMemory() {
+		return funcMemory;
+	}
+
 	@Override
 	public Double visitStatement(WRBParser.StatementContext ctx) {
 		if(ctx.expr() != null)
@@ -212,7 +231,19 @@ public class WRBObserver extends WRBBaseVisitor<Double> {
 		String p = ctx.p.getText();
 		String[] params = p.split(",");
 		
+		HashMap<String, Double> varMemoryTemp = new HashMap<>();
+		
+		for(String param : params) {
+			if(varMemory.containsKey(param)) {
+				varMemoryTemp.put(param, varMemory.get(param));
+				varMemory.remove(param);
+			}
+				
+		}
+		
 		funcMemory.put(id, new WRBFunction(TreeBuilder.buildTree(ctx.expr()), params));
+		
+		varMemory.putAll(varMemoryTemp);
 		
 		return Double.valueOf(1);
 	}
@@ -222,35 +253,15 @@ public class WRBObserver extends WRBBaseVisitor<Double> {
 	 */
 	
 	@Override
-	public Double visitEvalUserFunc(WRBParser.EvalUserFuncContext ctx) throws IllegalArgumentException{
-		System.out.println("Visiting EvalUserFunc");
-		
-		if(ctx.evalParams().params() != null) {
-			String p = ctx.evalParams().p.getText();
-			String[] params = p.split(",");
-			double[] args = new double[params.length];
+	public Double visitEvalUserFunc(WRBParser.EvalUserFuncContext ctx) {
+			List<WRBParser.ExprContext> exp = ctx.p.expr();
+			double[] params = new double[exp.size()];
 			int i = 0;
-			for(String param : params) {
-				if(varMemory.containsKey(param)) 
-					args[i] = varMemory.get(param);
-				else
-					throw new IllegalArgumentException("Ein oder mehrere Argumente existieren nicht!");
+			for(WRBParser.ExprContext c : exp) {
+				params[i] = visit(c);
 				i++;
 			}
-			return funcMemory.get(ctx.i.getText()).eval(args);
-		} else {
-			String p = ctx.p.getText();
-			String[] params = p.split(",");
-			double[] args = new double[params.length];
-			int i = 0;
-			for(String param : params) {
-				args[i] = Double.parseDouble(param);
-				i++;
-			}
-			return funcMemory.get(ctx.i.getText()).eval(args);
-		}
-		
-		
+			return funcMemory.get(ctx.i.getText()).eval(params);		
 	}
 	
 	@Override

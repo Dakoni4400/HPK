@@ -117,8 +117,9 @@ evalUserFunc
 	;
 	
 evalParams
-	: p=params
-	| SCI_NO(','SCI_NO)*
+	: //p=params
+	expr(','expr)*
+	//SCI_NO(','SCI_NO)*
 	;
 
 assignFunc

@@ -5,6 +5,8 @@ import java.util.HashMap;
 
 public class AddNode implements AstNode {
 	ArrayList<AstNode> children;
+	AstNode left;
+	AstNode right;
 	ArrayList<String> parameters = new ArrayList<>();
 	
 	public AddNode(ArrayList<AstNode> children, ArrayList<String> parameters) {
@@ -14,6 +16,8 @@ public class AddNode implements AstNode {
 	
 	public void addChildren(AstNode child) {
 		this.children.add(child);
+		this.left = children.get(1);
+		this.right = children.get(0);
 	}
 	
 	@Override
@@ -23,15 +27,6 @@ public class AddNode implements AstNode {
 	
 	@Override
 	public double eval(HashMap<String, Double> scope) {
-		System.out.println("Eval AddNode");
-		double[] subExpressions = new double[children.size()];
-		
-		double res = 0;
-		
-		for(int i = children.size() - 1; i >= 0; i--) {
-			subExpressions[i] = children.get(i).eval(scope);
-			res += subExpressions[i];
-		}
-		return res;
+		return left.eval(scope) + right.eval(scope);
 	}
 }

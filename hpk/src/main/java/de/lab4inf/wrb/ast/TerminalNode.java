@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class TerminalNode implements AstNode{
+	String varNameString;
 	ArrayList<String> varName = new ArrayList<>();
 	Double constantValue;
 	
 	public TerminalNode(ArrayList<String> varName) {
 		this.varName = varName;
+		varNameString = varName.get(0);
 	}
 	
 	public TerminalNode(double constantValue) {
@@ -26,12 +28,9 @@ public class TerminalNode implements AstNode{
 
 	@Override
 	public double eval(HashMap<String, Double> scope) {
-		System.out.println("Eval TerminalNode");
 		if (constantValue != null) {
-			System.out.println(constantValue);
 			return constantValue;
 		}
-		System.out.println(scope.get(varName.get(0)));
-		return scope.get(varName.get(0));
+		return scope.get(varNameString);
 	}
 }

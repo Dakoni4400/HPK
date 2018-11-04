@@ -2,7 +2,6 @@ package de.lab4inf.wrb;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashSet;
 import java.util.Set;
 
 import org.antlr.v4.runtime.CharStream;
@@ -12,7 +11,7 @@ import org.antlr.v4.runtime.CommonTokenStream;
 public class WRBScript implements Script {
 	private WRBParser.RunContext r;
 	private WRBParser parser = new WRBParser(null);
-	private final WRBObserver ob = new WRBObserver();
+	private final WRBObserver ob = WRBObserver.getInstance();
 	
 	private static double lastResult;
 	

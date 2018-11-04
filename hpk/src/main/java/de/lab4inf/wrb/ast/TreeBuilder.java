@@ -2,6 +2,7 @@ package de.lab4inf.wrb.ast;
 
 import java.util.ArrayList;
 
+import de.lab4inf.wrb.WRBObserver;
 import de.lab4inf.wrb.WRBParser;
 
 /**
@@ -16,20 +17,12 @@ public final class TreeBuilder {
 			AstNode left = buildTree(ctx.expr());
 			AddNode right = buildAddNode(ctx.exprAdd());
 			
-			ArrayList<String> parameters = right.getParams();
-			if(left.getParams()!=null)
-				parameters.addAll(left.getParams());
-			
 			right.addChildren(left);
 			
 			return right;
 		} else if(ctx.exprSub() != null) {
 			AstNode left = buildTree(ctx.expr());
 			SubNode right = buildSubNode(ctx.exprSub());
-			
-			ArrayList<String> parameters = right.getParams();
-			if(left.getParams()!=null)
-				parameters.addAll(left.getParams());
 			
 			right.addChildren(left);
 			
@@ -61,21 +54,12 @@ public final class TreeBuilder {
 			AstNode left = buildTerm(ctx.term());
 			MulNode right = buildMulNode(ctx.termMul());
 			
-			ArrayList<String> parameters = right.getParams();
-
-			if(left.getParams()!=null)
-				parameters.addAll(left.getParams());
-			
 			right.addChildren(left);
 			
 			return right;
 		} else if(ctx.termDiv() != null) {
 			AstNode left = buildTerm(ctx.term());
 			DivNode right = buildDivNode(ctx.termDiv());
-			
-			ArrayList<String> parameters = right.getParams();
-			if(left.getParams()!=null)
-				parameters.addAll(left.getParams());
 			
 			right.addChildren(left);
 			
@@ -107,10 +91,6 @@ public final class TreeBuilder {
 			AstNode left = buildTerminalNode(ctx.signedAtom());
 			PowNode right = buildPowNode(ctx.pow());
 			
-			ArrayList<String> parameters = right.getParams();
-			if(left.getParams()!=null)
-				parameters.addAll(left.getParams());
-			
 			right.addChildren(left);
 			
 			return right;
@@ -140,9 +120,54 @@ public final class TreeBuilder {
 	
 	public static AstNode buildTerminalNode(WRBParser.AtomContext ctx) {
 		System.out.println("Building TerminalNode");
+		if(ctx.function() != null) {
+			//Adding user Function Nodes
+			System.out.println("Building Function");
+			if(ctx.function().evalUserFunc() != null) {
+				System.out.println("Building UserFunction");
+				return new FuncNode(WRBObserver.getInstance().getFuncMemory().get(ctx.function().evalUserFunc().ID().getText()));
+			} 
+			// Adding lang.Math Nodes
+			if(ctx.function().mathFunction() != null) {
+				if(ctx.function().mathFunction().SIN() != null) {
+					ArrayList<AstNode> child = new ArrayList<>();
+					child.add(buildTree(ctx.function().mathFunction().e));
+					return new SinNode(child, child.get(0).getParams());
+				}
+				if(ctx.function().mathFunction().ASIN() != null) {
+					ArrayList<AstNode> child = new ArrayList<>();
+					child.add(buildTree(ctx.function().mathFunction().e));
+					return new AsinNode(child, child.get(0).getParams());
+				}
+				if(ctx.function().mathFunction().COS() != null) {
+					ArrayList<AstNode> child = new ArrayList<>();
+					child.add(buildTree(ctx.function().mathFunction().e));
+					return new CosNode(child, child.get(0).getParams());
+				}
+				if(ctx.function().mathFunction().ACOS() != null) {
+					ArrayList<AstNode> child = new ArrayList<>();
+					child.add(buildTree(ctx.function().mathFunction().e));
+					return new AcosNode(child, child.get(0).getParams());
+				}
+				if(ctx.function().mathFunction().TAN() != null) {
+					ArrayList<AstNode> child = new ArrayList<>();
+					child.add(buildTree(ctx.function().mathFunction().e));
+					return new TanNode(child, child.get(0).getParams());
+				}
+				if(ctx.function().mathFunction().ATAN() != null) {
+					ArrayList<AstNode> child = new ArrayList<>();
+					child.add(buildTree(ctx.function().mathFunction().e));
+					return new AtanNode(child, child.get(0).getParams());
+				}
+			}
+		}
+		
 		if(ctx.expr() != null) {
 			return buildTree(ctx.expr());
 		} else if(ctx.ID() != null) {
+			if(WRBObserver.getInstance().getVarMemory().containsKey(ctx.ID().getText())) {
+				return new TerminalNode(WRBObserver.getInstance().getVarMemory().get(ctx.ID().getText()));
+			}
 			ArrayList<String> param = new ArrayList<>();
 			param.add(ctx.ID().getText());
 			return new TerminalNode(param);

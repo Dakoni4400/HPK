@@ -19,7 +19,7 @@ public class App {
 		
 		//Parser und Observer erstellen
 		WRBParser parser = new WRBParser(null);
-		WRBObserver ob = new WRBObserver();
+		WRBObserver ob = WRBObserver.getInstance();
 		
 		WRBParser.RunContext r;
 		
@@ -40,7 +40,7 @@ public class App {
 				System.out.println("Visitor: " + res);
 				
 			} catch(Exception e) {
-				System.err.println("Fehler: " + e.toString());
+				throw new IllegalArgumentException("Ungültige Eingabe!");
 			}
 			
 			expr = br.readLine(); // nächste Zeile lesen
