@@ -25,6 +25,11 @@ public class DivNode implements AstNode {
 		return parameters;
 	}
 	
+	/**
+	 * Method which evaluates the given HashMap for the specific Math Function
+	 * @param  HashMap<String, Double> scope
+	 * @returns  the evaluated result as Double
+	 */
 	@Override
 	public double eval(HashMap<String, Double> scope) {
 		return left.eval(scope) / right.eval(scope);

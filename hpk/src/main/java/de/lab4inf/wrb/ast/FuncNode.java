@@ -27,6 +27,11 @@ public class FuncNode implements AstNode {
 		return fct.eval(params);
 	}
 
+	/**
+	 * Method which evaluates the given HashMap for the specific Math Function
+	 * @param  HashMap<String, Double> scope
+	 * @returns  the evaluated result as Double
+	 */
 	@Override
 	public ArrayList<String> getParams() {
 		// TODO Auto-generated method stub

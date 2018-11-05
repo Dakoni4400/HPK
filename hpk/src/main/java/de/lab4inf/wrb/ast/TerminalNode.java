@@ -26,6 +26,11 @@ public class TerminalNode implements AstNode{
 		return constantValue;
 	}
 
+	/**
+	 * Method which evaluates the given HashMap for the specific Math Function
+	 * @param  HashMap<String, Double> scope
+	 * @returns  the evaluated result as Double
+	 */
 	@Override
 	public double eval(HashMap<String, Double> scope) {
 		if (constantValue != null) {
