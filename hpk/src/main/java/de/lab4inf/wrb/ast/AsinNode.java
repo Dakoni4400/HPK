@@ -21,6 +21,11 @@ public class AsinNode implements AstNode{
 		return parameters;
 	}
 	
+	/**
+	 * Method which evaluates the given HashMap for the specific Math Function
+	 * @param  HashMap<String, Double> scope
+	 * @returns  the evaluated result as Double
+	 */
 	@Override
 	public double eval(HashMap<String, Double> scope) {
 		return Math.asin(children.get(0).eval(scope));

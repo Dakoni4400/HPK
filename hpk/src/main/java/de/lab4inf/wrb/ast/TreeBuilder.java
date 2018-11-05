@@ -6,7 +6,7 @@ import de.lab4inf.wrb.WRBObserver;
 import de.lab4inf.wrb.WRBParser;
 
 /**
- * This claas builds the ParseTree for a userdefined function
+ * This class builds the ParseTree for a userdefined function
  * @author Till Kobbe
  *
  */
@@ -17,6 +17,11 @@ public class TreeBuilder {
 		this.ob = ob;
 	}
 	
+	/**
+	 * Method for start building a Tree from the parsed ANTLR tree
+	 * @param WRBParser.ExprContext ctx
+	 * @return
+	 */
 	public AstNode buildTree(WRBParser.ExprContext ctx) {
 		if(ctx.exprAdd() != null) {
 			AstNode left = buildTree(ctx.expr());

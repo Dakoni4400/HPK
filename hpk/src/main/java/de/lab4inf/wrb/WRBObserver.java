@@ -13,14 +13,29 @@ public class WRBObserver extends WRBBaseVisitor<Double> {
 	HashMap<String, Double> varMemory = new HashMap<>();
 	HashMap<String, Function> funcMemory = new HashMap<>();
 	
+	/**
+	 * Method which gets the HashMap for variables memory
+	 * @param 
+	 * @returns  HashMap<String, Double> varMemory
+	 */
 	public HashMap<String, Double> getVarMemory() {
 		return varMemory;
 	}
 
+	/**
+	 * Method which gets the HashMap for functions memory
+	 * @param 
+	 * @returns  HashMap<String, Function> funcMemory
+	 */
 	public HashMap<String, Function> getFuncMemory() {
 		return funcMemory;
 	}
 
+	/**
+	 * Method which visits the Statement Node in the parsed tree
+	 * @param WRBParser.StatementContext ctx
+	 * @returns 
+	 */
 	@Override
 	public Double visitStatement(WRBParser.StatementContext ctx) {
 		if(ctx.expr() != null)
@@ -30,10 +45,11 @@ public class WRBObserver extends WRBBaseVisitor<Double> {
 		return visit(ctx.assignFunc());
 	}
 	
-	/*
-	 * EXPRESSION
+	/**
+	 * Method which visits the Expr Node in the parsed tree
+	 * @param WRBParser.ExprContext ctx
+	 * @returns 
 	 */
-	
 	@Override
 	public Double visitExpr(WRBParser.ExprContext ctx) {
 		/*if(ctx.evalUserFunc() != null)
@@ -45,20 +61,32 @@ public class WRBObserver extends WRBBaseVisitor<Double> {
 		return visit(ctx.expr()) - visit(ctx.exprSub());
 	}
 	
+	/**
+	 * Method which visits the ExprAdd Node in the parsed tree
+	 * @param WRBParser.ExprAddContext ctx
+	 * @returns 
+	 */
 	@Override
 	public Double visitExprAdd(WRBParser.ExprAddContext ctx) {
 		return visit(ctx.term());
 	}
 	
+	/**
+	 * Method which visits the ExprSub Node in the parsed tree
+	 * @param WRBParser.ExprSubContext ctx
+	 * @returns 
+	 */
 	@Override
 	public Double visitExprSub(WRBParser.ExprSubContext ctx) {
 		return visit(ctx.term());
 	}
 	
-	/*
-	 * TERM
-	 */
 	
+	/**
+	 * Method which visits the Term Node in the parsed tree
+	 * @param WRBParser.TermContext ctx
+	 * @returns 
+	 */
 	@Override
 	public Double visitTerm(WRBParser.TermContext ctx) {
 		if(ctx.termMul() != null) 
@@ -68,20 +96,31 @@ public class WRBObserver extends WRBBaseVisitor<Double> {
 		return visit(ctx.factor());
 	}
 	
+	/**
+	 * Method which visits the TermMul Node in the parsed tree
+	 * @param WRBParser.TermMulContext ctx
+	 * @returns 
+	 */
 	@Override
 	public Double visitTermMul(WRBParser.TermMulContext ctx) {
 		return visit(ctx.factor());
 	}
 	
+	/**
+	 * Method which visits the TermDiv Node in the parsed tree
+	 * @param WRBParser.TermDivContext ctx
+	 * @returns 
+	 */
 	@Override
 	public Double visitTermDiv(WRBParser.TermDivContext ctx) {
 		return visit(ctx.factor());
 	}
 	
-	/*
-	 * FACTOR
+	/**
+	 * Method which visits the Factor Node in the parsed tree
+	 * @param WRBParser.FactorContext ctx
+	 * @returns 
 	 */
-	
 	@Override
 	public Double visitFactor(WRBParser.FactorContext ctx) {
 		if(ctx.pow() != null)
@@ -89,19 +128,21 @@ public class WRBObserver extends WRBBaseVisitor<Double> {
 		return visit(ctx.signedAtom());
 	}
 	
-	/*
-	 * POW
+	/**
+	 * Method which visits the Pow Node in the parsed tree
+	 * @param WRBParser.PowContext ctx
+	 * @returns 
 	 */
-	
 	@Override
 	public Double visitPow(WRBParser.PowContext ctx) {
 		return visit(ctx.factor());
 	}
 	
-	/*
-	 * SIGNED ATOM
+	/**
+	 * Method which visits the SignedAtom Node in the parsed tree
+	 * @param WRBParser.SignedAtomContext ctx
+	 * @returns 
 	 */
-	
 	@Override
 	public Double visitSignedAtom(WRBParser.SignedAtomContext ctx) {
 		if(ctx.SUB() != null)
@@ -109,10 +150,11 @@ public class WRBObserver extends WRBBaseVisitor<Double> {
 		return visit(ctx.atom());
 	}
 	
-	/*
-	 * ATOM
+	/**
+	 * Method which visits the Atom Node in the parsed tree
+	 * @param WRBParser.AtomContext ctx
+	 * @returns 
 	 */
-	
 	@Override
 	public Double visitAtom(WRBParser.AtomContext ctx) {
 		if(ctx.expr() != null)
@@ -124,10 +166,11 @@ public class WRBObserver extends WRBBaseVisitor<Double> {
 		return varMemory.get(ctx.ID().getText());
 	}
 	
-	/*
-	 * FUNCTION
+	/**
+	 * Method which visits the ExprAdd Node in the parsed tree
+	 * @param WRBParser.ExprAddContext ctx
+	 * @returns 
 	 */
-	
 	@Override
 	public Double visitFunction(WRBParser.FunctionContext ctx) {
 		if(ctx.mathFunction() != null)
@@ -135,10 +178,11 @@ public class WRBObserver extends WRBBaseVisitor<Double> {
 		return visit(ctx.evalUserFunc());
 	}
 	
-	/*
-	 * MATH-FUNCTIONS
+	/**
+	 * Method which visits the MathFunction Node in the parsed tree
+	 * @param WRBParser.MathFunctionContext ctx
+	 * @returns 
 	 */
-	
 	@Override
 	public Double visitMathFunction(WRBParser.MathFunctionContext ctx) {
 		if(ctx.ABS() != null)
@@ -190,6 +234,11 @@ public class WRBObserver extends WRBBaseVisitor<Double> {
 		return Math.tanh(visit(ctx.e));
 	}
 	
+	/**
+	 * Method which visits the Max Node in the parsed tree
+	 * @param WRBParser.MaxContext ctx
+	 * @returns 
+	 */
 	@Override
 	public Double visitMax(WRBParser.MaxContext ctx) {
 		if(ctx.e4 == null) {
@@ -201,6 +250,11 @@ public class WRBObserver extends WRBBaseVisitor<Double> {
 			return Math.max(Math.max(visit(ctx.e1), visit(ctx.e2)), Math.max(visit(ctx.e3), visit(ctx.e4)));
 	}
 	
+	/**
+	 * Method which visits the Min Node in the parsed tree
+	 * @param WRBParser.MinContext ctx
+	 * @returns 
+	 */
 	@Override
 	public Double visitMin(WRBParser.MinContext ctx) {
 		if(ctx.e4 == null) {
@@ -212,10 +266,11 @@ public class WRBObserver extends WRBBaseVisitor<Double> {
 			return Math.min(Math.min(visit(ctx.e1), visit(ctx.e2)), Math.min(visit(ctx.e3), visit(ctx.e4)));
 	}
 	
-	/*
-	 * ASSIGN FUNCTION
+	/**
+	 * Method which visits the AssignFunc Node in the parsed tree
+	 * @param WRBParser.AssignFuncContext ctx
+	 * @returns 
 	 */
-	
 	@Override
 	public Double visitAssignFunc(WRBParser.AssignFuncContext ctx) {
 		String id = ctx.i.getText();
@@ -239,10 +294,11 @@ public class WRBObserver extends WRBBaseVisitor<Double> {
 		return Double.valueOf(1);
 	}
 	
-	/*
-	 * EVAL FUNCTION
+	/**
+	 * Method which visits the EvalUserFunc Node in the parsed tree
+	 * @param WRBParser.EvalUserFuncContext ctx
+	 * @returns 
 	 */
-	
 	@Override
 	public Double visitEvalUserFunc(WRBParser.EvalUserFuncContext ctx) {
 			List<WRBParser.ExprContext> exp = ctx.p.expr();
@@ -255,6 +311,11 @@ public class WRBObserver extends WRBBaseVisitor<Double> {
 			return funcMemory.get(ctx.i.getText()).eval(params);		
 	}
 	
+	/**
+	 * Method which visits the AssignVar Node in the parsed tree
+	 * @param WRBParser.AssignVarContext ctx
+	 * @returns 
+	 */
 	@Override
 	public Double visitAssignVar(WRBParser.AssignVarContext ctx) {
 		if(ctx.expr() != null) {
