@@ -11,7 +11,7 @@ public class WRBObserver extends WRBBaseVisitor<Double> {
 	private final TreeBuilder builder = new TreeBuilder(this);
 	
 	HashMap<String, Double> varMemory = new HashMap<>();
-	HashMap<String, Function> funcMemory = new HashMap<>();
+	HashMap<String, WRBFunction> funcMemory = new HashMap<>();
 	
 	/**
 	 * Method which gets the HashMap for variables memory
@@ -25,9 +25,9 @@ public class WRBObserver extends WRBBaseVisitor<Double> {
 	/**
 	 * Method which gets the HashMap for functions memory
 	 * @param 
-	 * @returns  HashMap<String, Function> funcMemory
+	 * @returns  HashMap<String, WRBFunction> funcMemory
 	 */
-	public HashMap<String, Function> getFuncMemory() {
+	public HashMap<String, WRBFunction> getFuncMemory() {
 		return funcMemory;
 	}
 
