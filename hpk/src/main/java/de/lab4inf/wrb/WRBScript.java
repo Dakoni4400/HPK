@@ -105,7 +105,7 @@ public class WRBScript implements Script {
      * @param fct to add 
      */
 	public void setFunction(String name, Function fct) {
-		ob.funcMemory.put(name, fct);
+		ob.funcMemory.put(name, (WRBFunction)fct);
 	}
 	
 	/**

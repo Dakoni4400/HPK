@@ -14,6 +14,10 @@ public class WRBFunction implements Function {
 		this.paramNames = paramNames;
 	}
 	
+	public String[] getParamNames() {
+		return paramNames;
+	}
+	
 	@Override
 	public double eval(double... args) {
 		int i = 0;

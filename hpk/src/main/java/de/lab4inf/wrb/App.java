@@ -8,7 +8,6 @@ import org.antlr.v4.runtime.*;
 import de.lab4inf.wrb.WRBLexer;
 import de.lab4inf.wrb.WRBObserver;
 import de.lab4inf.wrb.WRBParser;
-import de.lab4inf.wrb.WRBParser.RunContext;
 
 public class App {
 	public static void main(String args[]) throws Exception {

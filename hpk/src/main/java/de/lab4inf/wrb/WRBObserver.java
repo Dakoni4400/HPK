@@ -1,7 +1,6 @@
 package de.lab4inf.wrb;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 
 import de.lab4inf.wrb.ast.TreeBuilder;
@@ -11,13 +10,13 @@ public class WRBObserver extends WRBBaseVisitor<Double> {
 	private final TreeBuilder builder = new TreeBuilder(this);
 	
 	HashMap<String, Double> varMemory = new HashMap<>();
-	HashMap<String, Function> funcMemory = new HashMap<>();
+	HashMap<String, WRBFunction> funcMemory = new HashMap<>();
 	
 	public HashMap<String, Double> getVarMemory() {
 		return varMemory;
 	}
 
-	public HashMap<String, Function> getFuncMemory() {
+	public HashMap<String, WRBFunction> getFuncMemory() {
 		return funcMemory;
 	}
 

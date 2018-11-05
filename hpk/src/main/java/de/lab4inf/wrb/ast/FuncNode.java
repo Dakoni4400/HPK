@@ -1,15 +1,16 @@
 package de.lab4inf.wrb.ast;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Set;
 
-import de.lab4inf.wrb.Function;
+import de.lab4inf.wrb.WRBFunction;
 
 public class FuncNode implements AstNode {
-	Function fct;
+	WRBFunction fct;
 	
-	public FuncNode(Function fct) {
+	public FuncNode(WRBFunction fct) {
 		this.fct = fct;
 	}
 	
@@ -29,7 +30,7 @@ public class FuncNode implements AstNode {
 	@Override
 	public ArrayList<String> getParams() {
 		// TODO Auto-generated method stub
-		return null;
+		return new ArrayList<String>(Arrays.asList(fct.getParamNames()));
 	}
 	
 }
