@@ -127,14 +127,18 @@ public class TreeBuilder {
 				FuncNode ret =  new FuncNode(ob.getFuncMemory().get(ctx.function().evalUserFunc().ID().getText()));
 				WRBParser.EvalUserFuncContext c = ctx.function().evalUserFunc();
 				//Getting inner Functions
-				if(c.evalParams().expr(0) != null)
+				while(c.evalParams().expr(0) != null) {
 					if(c.evalParams().expr(0).term() != null)
 						if(c.evalParams().expr(0).term().factor() != null)
 							if(c.evalParams().expr(0).term().factor().signedAtom().atom().function() != null)
 								if(c.evalParams().expr(0).term().factor().signedAtom().atom().function().evalUserFunc() != null) {
 									c = c.evalParams().expr(0).term().factor().signedAtom().atom().function().evalUserFunc();
 									ret.setInnerFunction(ob.getFuncMemory().get(c.ID().getText()));
-								}
+								} else break;
+							else break;
+						else break;
+					else break;
+				}
 				return ret;
 			} 
 			// Adding lang.Math Nodes
