@@ -169,6 +169,16 @@ public class TreeBuilder {
 					child.add(buildTree(ctx.function().mathFunction().e));
 					return new AtanNode(child, child.get(0).getParams());
 				}
+				if(ctx.function().mathFunction().EXP() != null) {
+					ArrayList<AstNode> child = new ArrayList<>();
+					child.add(buildTree(ctx.function().mathFunction().e));
+					return new ExpNode(child, child.get(0).getParams());
+				}
+				if(ctx.function().mathFunction().LN() != null || ctx.function().mathFunction().LOGE() != null) {
+					ArrayList<AstNode> child = new ArrayList<>();
+					child.add(buildTree(ctx.function().mathFunction().e));
+					return new LogNode(child, child.get(0).getParams());
+				}
 			}
 		}
 		

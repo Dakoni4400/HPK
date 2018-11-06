@@ -1,7 +1,6 @@
 package de.lab4inf.wrb;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 
 import de.lab4inf.wrb.ast.TreeBuilder;
