@@ -1,12 +1,12 @@
 package de.lab4inf.wrb.matrix;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class SerialMultiplicationTest {
+public class ParallelMultiplicationTest {
 	@Before
 	public void setUp() {
 		
@@ -18,7 +18,7 @@ public class SerialMultiplicationTest {
 	}
 	
 	@Test
-	public void testSimpleSerialMultiplication() {
+	public void testSimpleParallelMultiplication() {
 		double[][] a = new double[][] {{1,2,3,4}, {2,3,4,5}, {1,2,3,4}, {2,3,4,5}};
 		double[][] b = new double[][] {{1,2,1,2}, {2,3,2,3}, {3,4,3,4}, {4,5,4,5}};
 		
@@ -29,19 +29,19 @@ public class SerialMultiplicationTest {
 		Matrix B = new Matrix(b);
 		Matrix res = new Matrix(res1);
 		
-		Matrix test = SerialMultiplier.multiply(A, B);
+		Matrix test = ParallelMultiplier.multiply(A, B);
 		
 		assertTrue(test.equals(res));
 		
 		res = new Matrix(res2);
 		
-		test = SerialMultiplier.multiply(B, A);
+		test = ParallelMultiplier.multiply(B, A);
 		
 		assertTrue(test.equals(res));
 	}
 	
 	@Test
-	public void testIdentitySerialMultiplication() {
+	public void testIdentityParallelMultiplication() {
 		double[][] a = new double[][] {{1,2,3,4}, {2,3,4,5}, {1,2,3,4}, {2,3,4,5}};
 		double[][] b = new double[][] {{1,0,0,0}, {0,1,0,0}, {0,0,1,0}, {0,0,0,1}};
 		
@@ -51,7 +51,7 @@ public class SerialMultiplicationTest {
 		Matrix B = new Matrix(b);
 		Matrix res = new Matrix(res1);
 		
-		Matrix test = SerialMultiplier.multiply(A, B);
+		Matrix test = ParallelMultiplier.multiply(A, B);
 		
 		assertTrue(test.equals(res));
 	}
@@ -67,20 +67,20 @@ public class SerialMultiplicationTest {
 		Matrix B = new Matrix(b);
 		Matrix res = new Matrix(res1);
 		
-		Matrix test = SerialMultiplier.multiply(A, B);
+		Matrix test = ParallelMultiplier.multiply(A, B);
 		
 		assertTrue(test.equals(res));
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
-	public void testIllegalSerialMultiplication() {
+	public void testIllegalParallelMultiplication() {
 		double[][] a = new double[][] {{1,2,3,4}, {2,3,4,5}, {1,2,3,4}, {2,3,4,5}};
 		double[][] b = new double[][] {{1}, {2}, {3}, {4}};
 		
 		Matrix A = new Matrix(a);
 		Matrix B = new Matrix(b);
 		
-		Matrix res = SerialMultiplier.multiply(A, B);
+		Matrix res = ParallelMultiplier.multiply(A, B);
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
@@ -91,6 +91,6 @@ public class SerialMultiplicationTest {
 		Matrix A = new Matrix(a);
 		Matrix B = new Matrix(b);
 		
-		Matrix res = SerialMultiplier.multiply(A, B);
+		Matrix res = ParallelMultiplier.multiply(A, B);
 	}
 }
