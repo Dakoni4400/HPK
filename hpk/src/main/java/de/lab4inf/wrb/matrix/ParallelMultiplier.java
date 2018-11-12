@@ -1,9 +1,21 @@
 package de.lab4inf.wrb.matrix;
 
-import static org.junit.Assert.assertTrue;
-
 public class ParallelMultiplier {
 	
+	/**
+	 * Parallele Matrizenmultiplikation für die Matrizen A, B
+	 * 
+	 * BUG: Erste Zeile in der Ergebnismatrix ist komplett 0!
+	 * 
+	 * TRYED:
+	 *  - Letzen Thread auch joinen -> Kein Erfolg
+	 * 
+	 * @param A
+	 * @param B
+	 * @return
+	 * @throws IllegalArgumentException
+	 * @throws RuntimeException
+	 */
 	public static Matrix multiply(Matrix A, Matrix B) throws IllegalArgumentException, RuntimeException {
 		double[][] a = A.getM();
 		double[][] b = B.getM();
