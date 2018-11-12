@@ -1,6 +1,7 @@
 package de.lab4inf.wrb.matrix;
 
 import java.awt.Dimension;
+import java.util.Random;
 
 public class Matrix {
 	private double[][] m;
@@ -14,13 +15,21 @@ public class Matrix {
 	public Matrix(Dimension dim) throws IllegalArgumentException{
 		if(m == null)
 			throw new IllegalArgumentException("Matrix kann nicht null sein");
-		this.m = new double[dim.height][dim.width];
+		this.m = new double[dim.width][dim.height];
 	}
 	
 	public Matrix(int x, int y) throws IllegalArgumentException{
 		if(m == null)
 			throw new IllegalArgumentException("Matrix kann nicht null sein");
 		this.m = new double[x][y];
+	}
+	
+	public double[][] getM() {
+		return m;
+	}
+	
+	public void setM(double[][] m) {
+		this.m = m;
 	}
 	
 	public Dimension getDim() {
@@ -35,12 +44,12 @@ public class Matrix {
 		this.m[x][y] = v;
 	}
 	
-	public double[][] transpose() {
+	public void transpose() {
         double[][] temp = new double[this.m[0].length][this.m.length];
         for (int i = 0; i < this.m.length; i++)
             for (int j = 0; j < this.m[0].length; j++)
                 temp[j][i] = this.m[i][j];
-        return temp;
+        setM(temp);
     }
 	
 	public boolean equals(Matrix B) {
@@ -51,6 +60,18 @@ public class Matrix {
 			}
 		}
 		return true;
+	}
+	
+	public Matrix getRandomMatrix(int rows, int cols, Random random) {
+		Matrix m = new Matrix(rows, cols);
+		
+		for (int x = 0; x < cols; ++x) {
+			for(int y = 0; y < rows; ++y) {
+				m.set(x, y, random.nextDouble());
+			}
+		}
+		
+		return m;
 	}
 	
 	@Override

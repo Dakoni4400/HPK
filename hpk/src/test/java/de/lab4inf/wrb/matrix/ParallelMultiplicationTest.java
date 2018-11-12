@@ -31,6 +31,9 @@ public class ParallelMultiplicationTest {
 		
 		Matrix test = ParallelMultiplier.multiply(A, B);
 		
+		System.out.println("Ergebnis: \n" + test.toString());
+		System.out.println("Erwartetes Ergebnis: \n" + res.toString());
+		
 		assertTrue(test.equals(res));
 		
 		res = new Matrix(res2);
@@ -75,7 +78,7 @@ public class ParallelMultiplicationTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void testIllegalParallelMultiplication() {
 		double[][] a = new double[][] {{1,2,3,4}, {2,3,4,5}, {1,2,3,4}, {2,3,4,5}};
-		double[][] b = new double[][] {{1}, {2}, {3}, {4}};
+		double[][] b = new double[][] {{1}, {2}, {3}};
 		
 		Matrix A = new Matrix(a);
 		Matrix B = new Matrix(b);

@@ -29,14 +29,22 @@ public class SerialMultiplicationTest {
 		Matrix B = new Matrix(b);
 		Matrix res = new Matrix(res1);
 		
+		// Test with matrix
 		Matrix test = SerialMultiplier.multiply(A, B);
+		assertTrue(test.equals(res));
 		
+		// Test with array
+		test = SerialMultiplier.multiply(a, b);
 		assertTrue(test.equals(res));
 		
 		res = new Matrix(res2);
 		
+		// Test with matrix
 		test = SerialMultiplier.multiply(B, A);
+		assertTrue(test.equals(res));
 		
+		// Test with array
+		test = SerialMultiplier.multiply(b, a);
 		assertTrue(test.equals(res));
 	}
 	
@@ -51,8 +59,12 @@ public class SerialMultiplicationTest {
 		Matrix B = new Matrix(b);
 		Matrix res = new Matrix(res1);
 		
+		// Test with matrix
 		Matrix test = SerialMultiplier.multiply(A, B);
+		assertTrue(test.equals(res));
 		
+		// Test with array
+		test = SerialMultiplier.multiply(a, b);
 		assertTrue(test.equals(res));
 	}
 	
@@ -67,15 +79,19 @@ public class SerialMultiplicationTest {
 		Matrix B = new Matrix(b);
 		Matrix res = new Matrix(res1);
 		
+		// Test with matrix
 		Matrix test = SerialMultiplier.multiply(A, B);
+		assertTrue(test.equals(res));
 		
+		// Test with array
+		test = SerialMultiplier.multiply(a, b);
 		assertTrue(test.equals(res));
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
-	public void testIllegalSerialMultiplication() {
+	public void testIllegalMatrixSerialMultiplication() {
 		double[][] a = new double[][] {{1,2,3,4}, {2,3,4,5}, {1,2,3,4}, {2,3,4,5}};
-		double[][] b = new double[][] {{1}, {2}, {3}, {4}};
+		double[][] b = new double[][] {{1}, {2}, {3}};
 		
 		Matrix A = new Matrix(a);
 		Matrix B = new Matrix(b);
@@ -84,7 +100,15 @@ public class SerialMultiplicationTest {
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
-	public void testNullMultiplication() {
+	public void testIllegalArraySerialMultiplication() {
+		double[][] a = new double[][] {{1,2,3,4}, {2,3,4,5}, {1,2,3,4}, {2,3,4,5}};
+		double[][] b = new double[][] {{1}, {2}, {3}};
+		
+		Matrix res = SerialMultiplier.multiply(a, b);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testMatrixNullMultiplication() {
 		double[][] a = new double[][] {{1},{2}};
 		double[][] b = null;
 		
@@ -92,5 +116,13 @@ public class SerialMultiplicationTest {
 		Matrix B = new Matrix(b);
 		
 		Matrix res = SerialMultiplier.multiply(A, B);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testArrayNullMultiplication() {
+		double[][] a = new double[][] {{1},{2}};
+		double[][] b = null;
+		
+		Matrix res = SerialMultiplier.multiply(a, b);
 	}
 }
