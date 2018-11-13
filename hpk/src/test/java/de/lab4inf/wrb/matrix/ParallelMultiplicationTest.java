@@ -2,6 +2,8 @@ package de.lab4inf.wrb.matrix;
 
 import static org.junit.Assert.assertTrue;
 
+import java.util.Random;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -95,5 +97,25 @@ public class ParallelMultiplicationTest {
 		Matrix B = new Matrix(b);
 		
 		Matrix res = ParallelMultiplier.multiply(A, B);
+	}
+	
+	@Test
+	public void testBigMatrix() {
+		Random rnd = new Random();
+		
+		int n = rnd.nextInt(1000);
+		
+		System.out.println(n + "\n");
+		
+		Matrix a = Matrix.getRandomMatrix(n, n-1, rnd);
+		Matrix b = Matrix.getRandomMatrix(n-1, n, rnd);
+		
+		System.out.println("Matrix A: " + a.toString());
+		System.out.println("Matrix B: " + b.toString());
+		
+		Matrix res = SerialMultiplier.multiply(a, b);
+		Matrix test = ParallelMultiplier.multiply(a, b);
+		
+		assertTrue(test.equals(res));
 	}
 }

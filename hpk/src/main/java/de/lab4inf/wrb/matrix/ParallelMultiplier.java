@@ -82,7 +82,9 @@ public class ParallelMultiplier {
 					for (int k = 0; k < a.getM()[0].length; k++) {
 						sum += a.get(i, k) * b.get(k, j);
 					}
-					res.set(i, j, sum);
+					synchronized(res) {
+						res.set(i, j, sum);
+					}
 				}
 			}
 		}

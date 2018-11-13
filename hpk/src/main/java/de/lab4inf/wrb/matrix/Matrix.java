@@ -34,8 +34,6 @@ public class Matrix {
 	 * @throws IllegalArgumentException
 	 */
 	public Matrix(Dimension dim) throws IllegalArgumentException{
-		if(m == null)
-			throw new IllegalArgumentException("Matrix kann nicht null sein");
 		this.m = new double[dim.width][dim.height];
 	}
 	
@@ -47,8 +45,6 @@ public class Matrix {
 	 * @throws IllegalArgumentException
 	 */
 	public Matrix(int x, int y) throws IllegalArgumentException{
-		if(m == null)
-			throw new IllegalArgumentException("Matrix kann nicht null sein");
 		this.m = new double[x][y];
 	}
 	
@@ -83,8 +79,8 @@ public class Matrix {
 	 * @param y
 	 * @return
 	 */
-	public double get(int x, int y) {
-		return this.m[x][y];
+	public double get(int rows, int cols) {
+		return this.m[rows][cols];
 	}
 	
 	/**
@@ -94,8 +90,8 @@ public class Matrix {
 	 * @param y
 	 * @param v
 	 */
-	public void set(int x, int y, double v) {
-		this.m[x][y] = v;
+	public void set(int row, int col, double v) {
+		this.m[row][col] = v;
 	}
 	
 	/**
@@ -103,9 +99,9 @@ public class Matrix {
 	 */
 	public void transpose() {
         double[][] temp = new double[this.m[0].length][this.m.length];
-        for (int i = 0; i < this.m.length; i++)
-            for (int j = 0; j < this.m[0].length; j++)
-                temp[j][i] = this.m[i][j];
+        for (int row = 0; row < this.m.length; row++)
+            for (int col = 0; col < this.m[0].length; col++)
+                temp[col][row] = this.m[row][col];
         setM(temp);
     }
 	
@@ -115,9 +111,9 @@ public class Matrix {
 	 * @return
 	 */
 	public boolean equals(Matrix B) {
-		for(int i = 0; i < m.length; i++) {
-			for(int j = 0; j < m[0].length; j++) {
-				if(m[i][j] != B.get(i, j))
+		for(int row = 0; row < m.length; row++) {
+			for(int col = 0; col < m[0].length; col++) {
+				if(m[row][col] != B.get(row, col))
 					return false;
 			}
 		}
@@ -132,11 +128,11 @@ public class Matrix {
 	 * @param random
 	 * @return
 	 */
-	public Matrix getRandomMatrix(int rows, int cols, Random random) {
+	public static Matrix getRandomMatrix(int rows, int cols, Random random) {
 		Matrix m = new Matrix(rows, cols);
 		
-		for (int x = 0; x < cols; ++x) {
-			for(int y = 0; y < rows; ++y) {
+		for (int x = 0; x < rows; x++) {
+			for(int y = 0; y < cols; y++) {
 				m.set(x, y, random.nextDouble());
 			}
 		}

@@ -15,11 +15,11 @@ public class SerialMultiplier {
 		
 		double[][] res = new double[a.length][b[0].length];
 		
-		for(int i = 0; i < a[0].length; i++) {
-			for(int j = 0; j < b[0].length; j++) {
-				res[i][j] = 0;
-				for(int k = 0; k < a.length; k++) {
-					res[i][j] += a[i][k] * b[k][j];
+		for(int rowA = 0; rowA < a.length; rowA++) {
+			for(int colB = 0; colB < b[0].length; colB++) {
+				res[rowA][colB] = 0;
+				for(int colA = 0; colA < a[1].length; colA++) {
+					res[rowA][colB] += a[rowA][colA] * b[colA][colB];
 				}
 			}
 		}
