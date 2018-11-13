@@ -3,6 +3,7 @@ package de.lab4inf.wrb.matrix;
 import static org.junit.Assert.*;
 
 import java.util.Random;
+import java.util.stream.LongStream;
 
 import org.junit.After;
 import org.junit.Before;
@@ -142,9 +143,6 @@ public class MatrixTest {
 		
 		Matrix test = ParallelMultiplier.multiply(A, B);
 		
-		System.out.println("Ergebnis: \n" + test.toString());
-		System.out.println("Erwartetes Ergebnis: \n" + res.toString());
-		
 		assertTrue(test.equals(res));
 		
 		res = new Matrix(res2);
@@ -214,8 +212,6 @@ public class MatrixTest {
 		
 		int n = rnd.nextInt(1000);
 		
-		System.out.println(n + "\n");
-		
 		Matrix a = Matrix.getRandomMatrix(n, n-1, rnd);
 		Matrix b = Matrix.getRandomMatrix(n-1, n, rnd);
 		
@@ -223,6 +219,53 @@ public class MatrixTest {
 		Matrix test = ParallelMultiplier.multiply(a, b);
 		
 		assertTrue(test.equals(res));
+	}
+	
+	/**
+	 * Tests the speedup of the parallel multiplication
+	 */
+	@Test
+	public void testMatrixMultiplicationSpeedup() {
+		System.err.println("TIME TEST");
+		long serial, parallel;
+		long calcTimes[] = new long[100];
+		int runs = 100;
+		final double SCALED = -1*runs;
+		Random rnd = new Random();
+		Matrix a, b, res;
+		
+		int matrixDimension = 64;
+		
+		while(matrixDimension <= 2048) {
+			a = Matrix.getRandomMatrix(matrixDimension + 1, matrixDimension, rnd);
+			b = Matrix.getRandomMatrix(matrixDimension, matrixDimension + 1, rnd);
+			
+			for(int i = 0; i < runs; i++) {
+				calcTimes[i] = System.nanoTime();
+				res = SerialMultiplier.multiply(a, b);
+				calcTimes[i] -= System.nanoTime();
+			}
+			
+			serial = LongStream.of(calcTimes).sum() / runs;
+			serial /= SCALED;
+			
+			for(int i = 0; i < runs; i++) {
+				calcTimes[i] = System.nanoTime();
+				res = ParallelMultiplier.multiply(a, b);
+				calcTimes[i] -= System.nanoTime();
+			}
+			
+			parallel = LongStream.of(calcTimes).sum() / runs;
+			parallel /= SCALED;
+			
+			System.err.println(matrixDimension + "x" + (matrixDimension+1) + " Runs: " + runs + "\n--- serial: " + serial + " \n--- parallel: " + parallel + " \n--- speedup: " + ((double)serial)/parallel);
+			
+			matrixDimension *= 2;
+			runs /= 4;
+			
+			if(runs == 0)
+				runs = 1;
+		}
 	}
 }
 
