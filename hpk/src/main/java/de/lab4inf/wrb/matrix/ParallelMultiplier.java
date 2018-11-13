@@ -35,7 +35,7 @@ public class ParallelMultiplier {
 		int startRow = 0;
 		
 		for(int i = 0; i < threads.length; ++i) {
-			threads[i] = new MultiplierThread(A, B, result, startRow, i);
+			threads[i] = new MultiplierThread(A, B, result, startRow, rowsPerThread + a.length % rowsPerThread);
 			threads[i].start();
 			startRow += rowsPerThread;
 		}
@@ -86,7 +86,6 @@ public class ParallelMultiplier {
 					for (int k = 0; k < a.getM()[0].length; k++) {
 						sum += a.get(i, k) * b.get(k, j);
 					}
-					
 					res.set(i, j, sum);
 				}
 			}
