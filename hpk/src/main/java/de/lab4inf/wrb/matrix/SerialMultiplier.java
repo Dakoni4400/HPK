@@ -18,7 +18,7 @@ public class SerialMultiplier {
 		for(int rowA = 0; rowA < a.length; rowA++) {
 			for(int colB = 0; colB < b[0].length; colB++) {
 				res[rowA][colB] = 0;
-				for(int colA = 0; colA < a[1].length; colA++) {
+				for(int colA = 0; colA < a[0].length; colA++) {
 					res[rowA][colB] += a[rowA][colA] * b[colA][colB];
 				}
 			}

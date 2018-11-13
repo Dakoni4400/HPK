@@ -7,6 +7,7 @@ import java.util.stream.LongStream;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class MatrixTest {
@@ -207,6 +208,7 @@ public class MatrixTest {
 	}
 	
 	@Test
+	@Ignore
 	public void testBigMatrix() {
 		Random rnd = new Random();
 		
@@ -232,7 +234,7 @@ public class MatrixTest {
 		int runs = 100;
 		final double SCALED = -1*runs;
 		Random rnd = new Random();
-		Matrix a, b, res;
+		Matrix a, b, resSerial = null, resParallel = null;
 		
 		int matrixDimension = 64;
 		
@@ -242,7 +244,7 @@ public class MatrixTest {
 			
 			for(int i = 0; i < runs; i++) {
 				calcTimes[i] = System.nanoTime();
-				res = SerialMultiplier.multiply(a, b);
+				resSerial = SerialMultiplier.multiply(a, b);
 				calcTimes[i] -= System.nanoTime();
 			}
 			
@@ -251,9 +253,11 @@ public class MatrixTest {
 			
 			for(int i = 0; i < runs; i++) {
 				calcTimes[i] = System.nanoTime();
-				res = ParallelMultiplier.multiply(a, b);
+				resParallel = ParallelMultiplier.multiply(a, b);
 				calcTimes[i] -= System.nanoTime();
 			}
+			
+			assertTrue(resParallel.equals(resSerial));
 			
 			parallel = LongStream.of(calcTimes).sum() / runs;
 			parallel /= SCALED;

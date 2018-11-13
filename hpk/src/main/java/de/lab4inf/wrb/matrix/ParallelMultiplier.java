@@ -1,14 +1,12 @@
 package de.lab4inf.wrb.matrix;
 
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 public class ParallelMultiplier {
 	
 	/**
 	 * Parallele Matrizenmultiplikation für die Matrizen A, B
-	 * 
-	 * BUG: Erste Zeile in der Ergebnismatrix ist komplett 0!
-	 * 
-	 * TRYED:
-	 *  - Letzen Thread auch joinen -> Kein Erfolg
 	 * 
 	 * @param A
 	 * @param B
@@ -16,7 +14,7 @@ public class ParallelMultiplier {
 	 * @throws IllegalArgumentException
 	 * @throws RuntimeException
 	 */
-	public static Matrix multiply(Matrix A, Matrix B) throws IllegalArgumentException, RuntimeException {
+	public static Matrix multiply(Matrix A, Matrix B) throws IllegalArgumentException, RuntimeException {		
 		double[][] a = A.getM();
 		double[][] b = B.getM();
 		
@@ -34,12 +32,11 @@ public class ParallelMultiplier {
 		int startRow = 0;
 		
 		for(int i = 0; i < threads.length; ++i) {
-			threads[i] = new MultiplierThread(A, B, result, startRow, rowsPerThread + a.length % rowsPerThread);
+			threads[i] = new MultiplierThread(a, b, result, startRow, rowsPerThread + a.length % rowsPerThread);
 			threads[i].start();
 			startRow += rowsPerThread;
 		}
 		
-		// Threads wieder zusammenführen
 		for (MultiplierThread thread : threads) {
 			try {
 				thread.join();
@@ -56,14 +53,15 @@ public class ParallelMultiplier {
 	}
 	
 	private static class MultiplierThread extends Thread {
-		private final Matrix a;
-		private final Matrix b;
+		private final double[][] a;
+		private final double[][] b;
 		private final Matrix res;
 		private final int startRow;
 		private final int rows;
+		final Lock lock = new ReentrantLock();
 		
-		public MultiplierThread(Matrix a, 
-								Matrix b, 
+		public MultiplierThread(double[][] a, 
+								double[][] b, 
 								Matrix res, 
 								int startRow, 
 								int rows) {
@@ -76,18 +74,16 @@ public class ParallelMultiplier {
 		
 		public void run() {
 			for (int i = startRow; i < startRow + rows; i++) {
-				for (int j = 0; j < b.getM()[0].length; j++) {
+				for (int j = 0; j < b[0].length; j++) {
+					lock.lock();
 					double sum = .0;
-					
-					for (int k = 0; k < a.getM()[0].length; k++) {
-						sum += a.get(i, k) * b.get(k, j);
+					for (int k = 0; k < a[0].length; k++) {
+						sum += a[i][k] * b[k][j];
 					}
-					synchronized(res) {
-						res.set(i, j, sum);
-					}
+					res.set(i, j, sum);
+					lock.unlock();
 				}
 			}
 		}
-
 	}	
 }
