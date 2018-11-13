@@ -29,8 +29,7 @@ public class ParallelMultiplier {
 		double[][] res = new double[a.length][b[0].length];
 		Matrix result = new Matrix(res);
 		
-		// 3 Threads für das splitten. Der vierte muss kann nicht innerhalb der Schleife instanziert werden
-		MultiplierThread[] threads = new MultiplierThread[3];
+		MultiplierThread[] threads = new MultiplierThread[4];
 		int rowsPerThread = a.length / threads.length;
 		int startRow = 0;
 		
@@ -39,9 +38,6 @@ public class ParallelMultiplier {
 			threads[i].start();
 			startRow += rowsPerThread;
 		}
-		
-		// Letzter Thread wird direkt gestartet
-		new MultiplierThread(A, B, result, startRow, rowsPerThread + a.length % rowsPerThread).run();
 		
 		// Threads wieder zusammenführen
 		for (MultiplierThread thread : threads) {
