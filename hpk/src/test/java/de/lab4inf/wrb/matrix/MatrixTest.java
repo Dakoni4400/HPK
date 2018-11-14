@@ -185,67 +185,7 @@ public class MatrixTest {
 		assertTrue(test.equals(res));
 
 	}
-	
-	/**
-	 * Tests the merge function for a odd Matrix
-	 */
-	@Test
-	public void testMergeOddMatrix5x4() {
-		
-		Matrix[][] a = new Matrix[2][2];
-		Matrix test;
-		double[][] resD = new double[][] {{1,2,3,4,0}, {2,3,4,5,0}, {1,2,3,4,0}, {2,3,4,5,0}, {1,2,3,4,0}};
-		Matrix res = new Matrix(resD);
-		
-		double [][] res1  = new double[][] {{1,2,3},{2,3,4},{1,2,3}};
-		double [][] res2  = new double[][] {{4,0},{5,0},{4,0}};
-		double [][] res3  = new double[][] {{2,3,4},{1,2,3}};
-		double [][] res4  = new double[][] {{5,0},{4,0}};
-		
-		a[0][0] = new Matrix(res1);
-		a[0][1] = new Matrix(res2);
-		a[1][0] = new Matrix(res3);
-		a[1][1] = new Matrix(res4);
-		
-		test = DivideNConquerMultiplier.merge(a);
-		
-		System.out.println("Erwartetes Ergebnis:\n" + res.toString());
-		System.out.println("Ergebnis:\n" + test.toString());
 
-		assertTrue(test.equals(res));
-
-	}
-	
-	/**
-	 * Tests the merge function for a odd Matrix
-	 */
-	@Test
-	public void testMergeOddMatrix4x5() {
-		
-		Matrix[][] a = new Matrix[2][2];
-		Matrix test;
-		double[][] resD = new double[][] {{1,2,3,4,5}, {2,3,4,5,6}, {1,2,3,4,5}, {2,3,4,5,6}, {1,2,3,4,5}, {0,0,0,0,0}};
-		Matrix res = new Matrix(resD);
-		
-		
-		double [][] res1  = new double[][] {{1,2,3},{2,3,4},{1,2,3}};
-		double [][] res2  = new double[][] {{4,5},{5,6},{4,5}};
-		double [][] res3  = new double[][] {{2,3,4},{0,0,0}};
-		double [][] res4  = new double[][] {{5,6},{0,0}};
-		
-		a[0][0] = new Matrix(res1);
-		a[0][1] = new Matrix(res2);
-		a[1][0] = new Matrix(res3);
-		a[1][1] = new Matrix(res4);
-		
-		test = DivideNConquerMultiplier.merge(a);
-		
-		System.out.println("Erwartetes Ergebnis:\n" + res.toString());
-		System.out.println("Ergebnis:\n" + test.toString());
-
-		assertTrue(test.equals(res));
-
-	}
 	
 	@Test
 	public void testIdentitySerialMultiplication() {
