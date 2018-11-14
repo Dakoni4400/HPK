@@ -1,9 +1,12 @@
 package de.lab4inf.wrb.matrix;
 
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.ArrayList;
 
 public class ParallelMultiplier {
+	
+	public static Matrix multiply(double[][] a, double[][] b) throws IllegalArgumentException, RuntimeException {
+		return multiply(new Matrix(a), new Matrix(b));
+	}
 	
 	/**
 	 * Parallele Matrizenmultiplikation für die Matrizen A, B
@@ -14,76 +17,68 @@ public class ParallelMultiplier {
 	 * @throws IllegalArgumentException
 	 * @throws RuntimeException
 	 */
-	public static Matrix multiply(Matrix A, Matrix B) throws IllegalArgumentException, RuntimeException {		
-		double[][] a = A.getM();
-		double[][] b = B.getM();
+	public static Matrix multiply(Matrix A, Matrix B) throws IllegalArgumentException, RuntimeException {	
+		/*
+		 * Fehlerbehandlung
+		 */
 		
-		if(a == null || b == null)
+		if(A.getM() == null || B.getM() == null)
 			throw new IllegalArgumentException("Matrizen können nicht null sein");
 		
-		if(a[0].length != b.length)
+		if(A.getCols() != B.getRows())
 			throw new IllegalArgumentException("Matrizen sind nicht kompatibel für Matrix-Multiplication");
 		
-		double[][] res = new double[a.length][b[0].length];
-		Matrix result = new Matrix(res);
+		/*
+		 * Setup
+		 */
 		
-		MultiplierThread[] threads = new MultiplierThread[4];
-		int rowsPerThread = a.length / threads.length;
-		int startRow = 0;
+		Matrix D = B.transpose();
 		
-		for(int i = 0; i < threads.length; ++i) {
-			threads[i] = new MultiplierThread(a, b, result, startRow, rowsPerThread + a.length % rowsPerThread);
-			threads[i].start();
-			startRow += rowsPerThread;
+		Matrix res = new Matrix(A.getRows(), B.getCols());
+		
+		ArrayList<MultiplyThread> threads = new ArrayList<>();
+		
+		for(int i = 0; i < A.getRows(); i++) {
+			MultiplyThread thread = new MultiplyThread(i, B.getCols(), A, D, res);
+			threads.add(thread);
+			thread.start();
 		}
 		
-		for (MultiplierThread thread : threads) {
+		for(MultiplyThread thread : threads) {
 			try {
 				thread.join();
-			} catch (InterruptedException ex) {
-				throw new RuntimeException("A thread interrupted");
+			} catch (InterruptedException e) {
+				throw new RuntimeException("Thread got interrupted!");
 			}
 		}
 		
-		return result;
-	}
-	
-	public static Matrix multiply(double[][] a, double[][] b) throws IllegalArgumentException {
-		return multiply(new Matrix(a), new Matrix(b));
-	}
-	
-	private static class MultiplierThread extends Thread {
-		private final double[][] a;
-		private final double[][] b;
-		private final Matrix res;
-		private final int startRow;
-		private final int rows;
-		final Lock lock = new ReentrantLock();
-		
-		public MultiplierThread(double[][] a, 
-								double[][] b, 
-								Matrix res, 
-								int startRow, 
-								int rows) {
-			this.a = a;
-			this.b = b;
-			this.res = res;
-			this.startRow = startRow;
-			this.rows = rows;
-		}
-		
-		public void run() {
-			for (int i = startRow; i < startRow + rows; i++) {
-				for (int j = 0; j < b[0].length; j++) {
-					lock.lock();
-					double sum = .0;
-					for (int k = 0; k < a[0].length; k++) {
-						sum += a[i][k] * b[k][j];
-					}
-					res.set(i, j, sum);
-					lock.unlock();
-				}
-			}
-		}
+		return res;
 	}	
+	
+	private static class MultiplyThread extends Thread {
+		private final int i;
+		private final int b_col;
+		private final Matrix A;
+		private final Matrix D;
+		private final Matrix res;
+		
+		public MultiplyThread(int i, int b_col, Matrix A, Matrix D, Matrix res)  {
+			this.i = i;
+			this.b_col = b_col;
+			this.A = A;
+			this.D = D;
+			this.res = res;
+		}
+		
+		@Override
+		public void run() {
+			for(int j = 0; j < b_col; j++) {
+				double sum = .0;
+				for(int k = 0; k < A.getCols(); k++) {
+					sum += A.get(i, k) * D.get(j, k);
+				}
+				res.set(i, j, sum);
+			}
+		}
+	}
 }

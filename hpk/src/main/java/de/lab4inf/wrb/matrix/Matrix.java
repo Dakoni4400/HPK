@@ -44,8 +44,8 @@ public class Matrix {
 	 * @param y
 	 * @throws IllegalArgumentException
 	 */
-	public Matrix(int x, int y) throws IllegalArgumentException{
-		this.m = new double[x][y];
+	public Matrix(int rows, int cols) throws IllegalArgumentException{
+		this.m = new double[rows][cols];
 	}
 	
 	/**
@@ -54,6 +54,14 @@ public class Matrix {
 	 */
 	public double[][] getM() {
 		return m;
+	}
+	
+	public int getRows() {
+		return m.length;
+	}
+	
+	public int getCols() {
+		return m[0].length;
 	}
 	
 	/**
@@ -75,8 +83,8 @@ public class Matrix {
 	/**
 	 * Returns the value M(x,y)
 	 * 
-	 * @param x
-	 * @param y
+	 * @param rows
+	 * @param cols
 	 * @return
 	 */
 	public double get(int rows, int cols) {
@@ -86,8 +94,8 @@ public class Matrix {
 	/**
 	 * Sets the value M(x,y) = v
 	 * 
-	 * @param x
-	 * @param y
+	 * @param row
+	 * @param col
 	 * @param v
 	 */
 	public void set(int row, int col, double v) {
@@ -97,12 +105,12 @@ public class Matrix {
 	/**
 	 * Transposes the matrix
 	 */
-	public void transpose() {
+	public Matrix transpose() {
         double[][] temp = new double[this.m[0].length][this.m.length];
         for (int row = 0; row < this.m.length; row++)
             for (int col = 0; col < this.m[0].length; col++)
                 temp[col][row] = this.m[row][col];
-        setM(temp);
+        return new Matrix(temp);
     }
 	
 	/**
