@@ -24,7 +24,11 @@ public class DivideNConquerMultiplier {
 		Matrix[][] splitA = split(A);
 		Matrix[][] splitB = split(B);
 		Matrix[][] splitC = split(C);
-		Matrix[][][] temp = new Matrix[4][4][2];
+		Matrix[][][] temp = new Matrix[2][2][2];
+		for(int i = 0; i < 2; i++)
+			for(int j = 0; j < 2; j++)
+				for(int k = 0; k < 2; k++)
+					temp[i][j][k] = new Matrix(splitA[i][j].getRows(), splitB[i][j].getCols());
 		
 		ArrayList<MultiplyThread> mulThreads = new ArrayList<>();
 		
@@ -34,8 +38,8 @@ public class DivideNConquerMultiplier {
 		
 		for(int j = 0; j < 2; j++) {
 			for(int k = 0; k < 2; k++) {
-				MultiplyThread thread1 = new MultiplyThread(splitA[j][1], splitB[1][k], temp[j][k][1]);
-				MultiplyThread thread2 = new MultiplyThread(splitA[j][2], splitB[2][k], temp[j][k][2]);
+				MultiplyThread thread1 = new MultiplyThread(splitA[j][0], splitB[0][k], temp[j][k][0]);
+				MultiplyThread thread2 = new MultiplyThread(splitA[j][1], splitB[1][k], temp[j][k][1]);
 				mulThreads.add(thread1);
 				mulThreads.add(thread2);
 				thread1.start();
@@ -62,7 +66,7 @@ public class DivideNConquerMultiplier {
 		ArrayList<AddThread> addThreads = new ArrayList<>();
 		for(int j = 0; j < 2; j++) {
 			for(int k = 0; k < 2; k++) {
-				AddThread thread = new AddThread(temp[j][k][1], temp[j][k][2], splitC[j][k]);
+				AddThread thread = new AddThread(temp[j][k][0], temp[j][k][1], splitC[j][k]);
 				addThreads.add(thread);
 				thread.start();
 			}
@@ -114,7 +118,7 @@ public class DivideNConquerMultiplier {
 		
 		double[][] a = A.getM();
 		
-		int splitLength1 = a.length / 2;
+		int splitLength1 = a.length / 2 + (a.length % 2);
 		int splitLength2 = a.length - splitLength1;
 		
 		double[][] a11 = new double[splitLength1][splitLength1];
@@ -123,7 +127,7 @@ public class DivideNConquerMultiplier {
 		double[][] a22 = new double[splitLength2][splitLength2];
 		
 		for(int i = 0; i < a.length; i++) {
-			for(int j = 0; j < a[0].length; i++) {
+			for(int j = 0; j < a[0].length; j++) {
 				if(i < splitLength1) 
 					if(j < splitLength1)
 						a11[i][j] = a[i][j];
@@ -131,22 +135,22 @@ public class DivideNConquerMultiplier {
 						a12[i][j - splitLength1] = a[i][j];
 				else
 					if(j < splitLength1)
-						a21[i - splitLength2][j] = a[i][j];
+						a21[i - splitLength1][j] = a[i][j];
 					else
-						a22[i - splitLength2][j - splitLength1] = a[i][j];
+						a22[i - splitLength1][j - splitLength1] = a[i][j];
 			}
 		}
-		res[1][1] = new Matrix(a11);
-		res[1][2] = new Matrix(a12);
-		res[2][1] = new Matrix(a21);
-		res[2][2] = new Matrix(a22);
+		res[0][0] = new Matrix(a11);
+		res[0][1] = new Matrix(a12);
+		res[1][0] = new Matrix(a21);
+		res[1][1] = new Matrix(a22);
 		
 		return res;
 	}
 	
 	public static Matrix merge(Matrix[][] mat) {
-		int rows = mat[1][1].getRows() + mat[2][1].getRows();
-		int cols = mat[1][1].getCols() + mat[1][2].getCols();
+		int rows = mat[0][0].getRows() + mat[1][0].getRows();
+		int cols = mat[0][0].getCols() + mat[0][1].getCols();
 		
 		int splitLength1 = rows / 2;
 		int splitLength2 = rows - splitLength1;
@@ -157,14 +161,14 @@ public class DivideNConquerMultiplier {
 			for(int j = 0; j < cols; j++) {
 				if(i < splitLength1) 
 					if(j < splitLength1)
-						res[i][j] = mat[1][1].getM()[i][j];
+						res[i][j] = mat[0][0].getM()[i][j];
 					else
-						res[i][j] = mat[1][2].getM()[i][j - splitLength1];
+						res[i][j] = mat[0][1].getM()[i][j - splitLength1];
 				else
 					if(j < splitLength1)
-						res[i][j] = mat[2][1].getM()[i - splitLength2][j];
+						res[i][j] = mat[1][0].getM()[i - splitLength1][j];
 					else
-						res[i][j] = mat[2][2].getM()[i - splitLength2][j - splitLength1];
+						res[i][j] = mat[1][1].getM()[i - splitLength1][j - splitLength1];
 			}
 		}
 		
@@ -188,8 +192,23 @@ public class DivideNConquerMultiplier {
 		}
 		
 		@Override
-		public void run() {
-			C = SerialMultiplier.multiply(A, B);
+		public void run() {	
+			if(C == null) {
+				C = new Matrix(A.getRows(), B.getCols());
+			}
+			
+			/*
+			 * Code aus Serieller Multiplikation
+			 */
+			for(int rowA = 0; rowA < A.getRows(); rowA++) {
+				for(int colB = 0; colB < B.getCols(); colB++) {
+					double sum = .0;
+					for(int colA = 0; colA < A.getCols(); colA++) {
+						sum += A.get(rowA, colA) * B.get(colA, colB);
+					}
+					C.set(rowA, colB, sum);
+				}
+			}			
 		}
 	}
 	
@@ -211,7 +230,11 @@ public class DivideNConquerMultiplier {
 		
 		@Override
 		public void run() {
-			C = add(A,B);
+			for(int i = 0; i < A.getCols(); i++) {
+				for(int j = 0; j < A.getRows(); j++) {
+					C.set(i, j, A.get(i, j) + B.get(i, j));
+				}
+			}
 		}
 	}
 }
