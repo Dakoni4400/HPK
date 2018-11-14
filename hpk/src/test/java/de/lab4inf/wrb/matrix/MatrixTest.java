@@ -37,18 +37,10 @@ public class MatrixTest {
 		Matrix test = SerialMultiplier.multiply(A, B);
 		assertTrue(test.equals(res));
 		
-		// Test with array
-		test = SerialMultiplier.multiply(a, b);
-		assertTrue(test.equals(res));
-		
 		res = new Matrix(res2);
 		
 		// Test with matrix
 		test = SerialMultiplier.multiply(B, A);
-		assertTrue(test.equals(res));
-		
-		// Test with array
-		test = SerialMultiplier.multiply(b, a);
 		assertTrue(test.equals(res));
 	}
 	
@@ -66,10 +58,6 @@ public class MatrixTest {
 		// Test with matrix
 		Matrix test = SerialMultiplier.multiply(A, B);
 		assertTrue(test.equals(res));
-		
-		// Test with array
-		test = SerialMultiplier.multiply(a, b);
-		assertTrue(test.equals(res));
 	}
 	
 	@Test
@@ -86,10 +74,6 @@ public class MatrixTest {
 		// Test with matrix
 		Matrix test = SerialMultiplier.multiply(A, B);
 		assertTrue(test.equals(res));
-		
-		// Test with array
-		test = SerialMultiplier.multiply(a, b);
-		assertTrue(test.equals(res));
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
@@ -104,14 +88,6 @@ public class MatrixTest {
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
-	public void testIllegalArraySerialMultiplication() {
-		double[][] a = new double[][] {{1,2,3,4}, {2,3,4,5}, {1,2,3,4}, {2,3,4,5}};
-		double[][] b = new double[][] {{1}, {2}, {3}};
-		
-		Matrix res = SerialMultiplier.multiply(a, b);
-	}
-	
-	@Test(expected = IllegalArgumentException.class)
 	public void testMatrixNullMultiplication() {
 		double[][] a = new double[][] {{1},{2}};
 		double[][] b = null;
@@ -123,11 +99,14 @@ public class MatrixTest {
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
-	public void testArrayNullMultiplication() {
+	public void testSerialNullMultiplication() {
 		double[][] a = new double[][] {{1},{2}};
 		double[][] b = null;
 		
-		Matrix res = SerialMultiplier.multiply(a, b);
+		Matrix A = new Matrix(a);
+		Matrix B = new Matrix(b);
+		
+		Matrix res = SerialMultiplier.multiply(A, B);
 	}
 	
 	@Test
@@ -208,7 +187,7 @@ public class MatrixTest {
 	}
 	
 	@Test
-	@Ignore
+	//@Ignore
 	public void testBigMatrix() {
 		Random rnd = new Random();
 		
@@ -265,7 +244,7 @@ public class MatrixTest {
 			System.err.println(matrixDimension + "x" + (matrixDimension+1) + " Runs: " + runs + "\n--- serial: " + serial + " \n--- parallel: " + parallel + " \n--- speedup: " + ((double)serial)/parallel);
 			
 			matrixDimension *= 2;
-			runs /= 4;
+			runs /= 2;
 			
 			if(runs == 0)
 				runs = 1;

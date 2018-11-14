@@ -3,28 +3,32 @@ package de.lab4inf.wrb.matrix;
 public class SerialMultiplier {
 
 	public static Matrix multiply(Matrix A, Matrix B) throws IllegalArgumentException {
-		return multiply(A.getM(), B.getM());
-	}
-	
-	public static Matrix multiply(double[][] a, double[][] b) throws IllegalArgumentException {
-		if(a == null || b == null)
+		/*
+		 * Fehlerbehandlung
+		 */
+		
+		if(A.getM() == null || B.getM() == null)
 			throw new IllegalArgumentException("Matrizen können nicht null sein");
 		
-		if(a[0].length != b.length)
+		if(A.getCols() != B.getRows())
 			throw new IllegalArgumentException("Matrizen sind nicht kompatibel für Matrix-Multiplication");
 		
-		double[][] res = new double[a.length][b[0].length];
+		/**
+		 * Algo
+		 */
 		
-		for(int rowA = 0; rowA < a.length; rowA++) {
-			for(int colB = 0; colB < b[0].length; colB++) {
-				res[rowA][colB] = 0;
-				for(int colA = 0; colA < a[0].length; colA++) {
-					res[rowA][colB] += a[rowA][colA] * b[colA][colB];
+		Matrix res = new Matrix(A.getRows(), B.getCols());
+		
+		for(int rowA = 0; rowA < A.getRows(); rowA++) {
+			for(int colB = 0; colB < B.getCols(); colB++) {
+				double sum = .0;
+				for(int colA = 0; colA < A.getCols(); colA++) {
+					sum += A.get(rowA, colA) * B.get(colA, colB);
 				}
+				res.set(rowA, colB, sum);
 			}
 		}
 		
-		return new Matrix(res);
+		return res;
 	}
-
 }

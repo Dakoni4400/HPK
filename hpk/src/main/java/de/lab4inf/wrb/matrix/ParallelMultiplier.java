@@ -4,10 +4,6 @@ import java.util.ArrayList;
 
 public class ParallelMultiplier {
 	
-	public static Matrix multiply(double[][] a, double[][] b) throws IllegalArgumentException, RuntimeException {
-		return multiply(new Matrix(a), new Matrix(b));
-	}
-	
 	/**
 	 * Parallele Matrizenmultiplikation für die Matrizen A, B
 	 * 
@@ -32,17 +28,25 @@ public class ParallelMultiplier {
 		 * Setup
 		 */
 		
-		Matrix D = B.transpose();
-		
 		Matrix res = new Matrix(A.getRows(), B.getCols());
 		
+		Matrix D = B.transpose();
+		
 		ArrayList<MultiplyThread> threads = new ArrayList<>();
+		
+		/**
+		 * Paralleler Teil
+		 */
 		
 		for(int i = 0; i < A.getRows(); i++) {
 			MultiplyThread thread = new MultiplyThread(i, B.getCols(), A, D, res);
 			threads.add(thread);
 			thread.start();
 		}
+
+		/**
+		 * Zusammenführen
+		 */
 		
 		for(MultiplyThread thread : threads) {
 			try {
