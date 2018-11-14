@@ -148,6 +148,11 @@ public class DivideNConquerMultiplier {
 		return res;
 	}
 	
+	/**
+	 * Merges 4 to 1 matrix
+	 * @param mat
+	 * @return
+	 */
 	public static Matrix merge(Matrix[][] mat) {
 		int rows = mat[0][0].getRows() + mat[1][0].getRows();
 		int cols = mat[0][0].getCols() + mat[0][1].getCols();
