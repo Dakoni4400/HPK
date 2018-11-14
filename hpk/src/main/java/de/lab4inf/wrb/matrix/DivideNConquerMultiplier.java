@@ -18,11 +18,23 @@ public class DivideNConquerMultiplier {
 		/**
 		 * Setup
 		 */
+		int n = A.getRows();
+		int m = nextPowerOfTwo(n);
 		
-		Matrix C = new Matrix(A.getRows(), B.getCols());
+		Matrix APrep = new Matrix(m, m);
+		Matrix BPrep = new Matrix(m, m);
 		
-		Matrix[][] splitA = split(A);
-		Matrix[][] splitB = split(B);
+		for(int i = 0; i < m; i++) {
+			for(int j = 0; j < m; j++) {
+				APrep.set(i, j, A.get(i, j));
+				BPrep.set(i, j, B.get(i, j));
+			}
+		}
+		
+		Matrix C = new Matrix(m, m);
+		
+		Matrix[][] splitA = split(APrep);
+		Matrix[][] splitB = split(BPrep);
 		Matrix[][] splitC = split(C);
 		Matrix[][][] temp = new Matrix[2][2][2];
 		for(int i = 0; i < 2; i++)
@@ -178,6 +190,11 @@ public class DivideNConquerMultiplier {
 		}
 		
 		return new Matrix(res);
+	}
+	
+	private static int nextPowerOfTwo(int n) {
+		int log2 = (int) Math.ceil(Math.log(n) / Math.log(2));
+		return (int) Math.pow(2, log2);
 	}
 	
 	/**

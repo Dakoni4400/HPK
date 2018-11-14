@@ -88,7 +88,12 @@ public class Matrix {
 	 * @return
 	 */
 	public double get(int rows, int cols) {
-		return this.m[rows][cols];
+		try {
+			return this.m[rows][cols];
+		} catch (ArrayIndexOutOfBoundsException e) {
+			return 0;
+		}
+		
 	}
 	
 	/**
@@ -121,7 +126,7 @@ public class Matrix {
 	public boolean equals(Matrix B) {
 		for(int row = 0; row < m.length; row++) {
 			for(int col = 0; col < m[0].length; col++) {
-				if(m[row][col] != B.get(row, col))
+				if(this.get(row, col) != B.get(row, col))
 					return false;
 			}
 		}
