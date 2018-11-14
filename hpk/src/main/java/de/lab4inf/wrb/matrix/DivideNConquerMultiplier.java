@@ -18,7 +18,10 @@ public class DivideNConquerMultiplier {
 		/**
 		 * Setup
 		 */
-		int n = A.getRows();
+		
+		// Matrizen zunächst quadratisch machen, damit wir uns nicht mit ungeraden Größen rumschlagen müssen
+		
+		int n = Math.max(A.getRows(), B.getRows());
 		int m = nextPowerOfTwo(n);
 		
 		Matrix APrep = new Matrix(m, m);
@@ -32,6 +35,8 @@ public class DivideNConquerMultiplier {
 		}
 		
 		Matrix C = new Matrix(m, m);
+		
+		// Dann splitten
 		
 		Matrix[][] splitA = split(APrep);
 		Matrix[][] splitB = split(BPrep);
@@ -192,6 +197,11 @@ public class DivideNConquerMultiplier {
 		return new Matrix(res);
 	}
 	
+	/**
+	 * Gibt für die gegebene Zahl die nächste Zweierpotenz
+	 * @param n
+	 * @return
+	 */
 	private static int nextPowerOfTwo(int n) {
 		int log2 = (int) Math.ceil(Math.log(n) / Math.log(2));
 		return (int) Math.pow(2, log2);
