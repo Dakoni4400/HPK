@@ -22,7 +22,11 @@ public class DivideNConquerMultiplier {
 		// Matrizen zunächst quadratisch machen, damit wir uns nicht mit ungeraden Größen rumschlagen müssen
 		
 		int n = Math.max(A.getRows(), B.getRows());
-		int m = nextPowerOfTwo(n);
+		int m;
+		if(n%2 == 0)
+			m = n;
+		else
+			m = n+1;
 		
 		Matrix APrep = new Matrix(m, m);
 		Matrix BPrep = new Matrix(m, m);
@@ -110,6 +114,7 @@ public class DivideNConquerMultiplier {
 	 * @param B
 	 * @return
 	 */
+	@SuppressWarnings("unused")
 	private static Matrix add(Matrix A, Matrix B) throws IllegalArgumentException {
 		if(!(A.getRows() == B.getRows() && A.getCols() == B.getCols()))
 			throw new IllegalArgumentException("Matrizen haben nicht die gleiche Größe!");
