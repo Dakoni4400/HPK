@@ -385,6 +385,22 @@ public class MatrixMultTest {
 		checkDoubleMatrixEqual(test, res);
 	}
 	
+	@Test
+	public void testMerge() {
+		double[][] a = new double[][] {{1}};
+		double[][] b = new double[][] {{2}};
+		double[][] c = new double[][] {{3}};
+		double[][] d = new double[][] {{4}};
+		
+		Matrix[][] m = new Matrix[][] {{new Matrix(a), new Matrix(b)}, {new Matrix(c), new Matrix(d)}};
+		
+		Matrix res = new Matrix(new double[][] {{1,2},{3,4}});
+		
+		Matrix test = DivideNConquerMultiplier.merge(m);
+		
+		assertTrue(test.equals(res));
+	}
+	
 	/**
 	 * Tests the speedup of the parallel multiplication
 	 */

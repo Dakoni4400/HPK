@@ -1,6 +1,5 @@
 package de.lab4inf.wrb.matrix;
 
-import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -56,8 +55,6 @@ public class DivideNConquerMultiplier {
 			for(int j = 0; j < 2; j++)
 				for(int k = 0; k < 2; k++)
 					temp[i][j][k] = new Matrix(splitA[i][j].getRows(), splitB[i][j].getCols());
-		
-		//ArrayList<MultiplyThread> mulThreads = new ArrayList<>();
 		
 		/**
 		 * Paralleler 1. Teil 
@@ -187,23 +184,22 @@ public class DivideNConquerMultiplier {
 		int rows = mat[0][0].getRows() + mat[1][0].getRows();
 		int cols = mat[0][0].getCols() + mat[0][1].getCols();
 		
-		int splitLength1 = rows / 2;
-		int splitLength2 = rows - splitLength1;
+		int splitLength = rows / 2;
 		
 		double[][] res = new double[rows][cols];
 		
 		for(int i = 0; i < rows; i++) {
 			for(int j = 0; j < cols; j++) {
-				if(i < splitLength1) 
-					if(j < splitLength1)
+				if(i < splitLength) 
+					if(j < splitLength)
 						res[i][j] = mat[0][0].getM()[i][j];
 					else
-						res[i][j] = mat[0][1].getM()[i][j - splitLength1];
+						res[i][j] = mat[0][1].getM()[i][j - splitLength];
 				else
-					if(j < splitLength1)
-						res[i][j] = mat[1][0].getM()[i - splitLength1][j];
+					if(j < splitLength)
+						res[i][j] = mat[1][0].getM()[i - splitLength][j];
 					else
-						res[i][j] = mat[1][1].getM()[i - splitLength1][j - splitLength1];
+						res[i][j] = mat[1][1].getM()[i - splitLength][j - splitLength];
 			}
 		}
 		
@@ -215,6 +211,7 @@ public class DivideNConquerMultiplier {
 	 * @param n
 	 * @return
 	 */
+	@SuppressWarnings("unused")
 	private static int nextPowerOfTwo(int n) {
 		int log2 = (int) Math.ceil(Math.log(n) / Math.log(2));
 		return (int) Math.pow(2, log2);

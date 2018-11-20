@@ -39,7 +39,9 @@ public class App {
 				System.out.println("Visitor: " + res);
 				
 			} catch(Exception e) {
+				e.printStackTrace();
 				throw new IllegalArgumentException("Ungültige Eingabe!");
+				
 			}
 			
 			expr = br.readLine(); // nächste Zeile lesen
