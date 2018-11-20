@@ -44,6 +44,18 @@ public class MatrixMultTest {
 		// Test with matrix
 		test = SerialMultiplier.multiply(B, A);
 		assertTrue(test.equals(res));
+		
+		a = new double[][] {{1,2,3,4,5,6},{1,2,3,4,5,6},{1,2,3,4,5,6},{1,2,3,4,5,6},{1,2,3,4,5,6},{1,2,3,4,5,6}};
+		b = new double[][] {{1,2,3,4,5,6},{1,2,3,4,5,6},{1,2,3,4,5,6},{1,2,3,4,5,6},{1,2,3,4,5,6},{1,2,3,4,5,6}};
+		
+		A = new Matrix(a);
+		B = new Matrix(b);
+		
+		res = new Matrix(new double[][] {{21,42,63,84,105,126},{21,42,63,84,105,126},{21,42,63,84,105,126},{21,42,63,84,105,126},{21,42,63,84,105,126},{21,42,63,84,105,126}});
+		
+		test = SerialMultiplier.multiply(A, B);
+		
+		assertTrue(test.equals(res));
 	}
 	
 		/**
@@ -452,8 +464,8 @@ public class MatrixMultTest {
 			dnd = LongStream.of(calcTimes).sum() / runs;
 			dnd /= SCALED;
 			
-			double speedupParallel = (double)serial/parallel;
-			double speedupDnd = (double)serial/dnd;
+			double speedupParallel = (double)serial/(double)parallel;
+			double speedupDnd = (double)serial/(double)dnd;
 			System.err.println(matrixDimension + "x" + (matrixDimension+1) + " Runs: " + runs + "\n--- serial: " + serial + " \n--- parallel: " + parallel + " --- speedup: " + speedupParallel + "\n--- divide and conquer: " + dnd + " --- speedup: " + speedupDnd);
 			
 			matrixDimension *= 2;
