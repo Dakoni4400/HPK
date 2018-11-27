@@ -21,7 +21,10 @@ double differentiate(Function& f, double x, double err) {
 		difPrevious = dif;
 	}
 
-	printf("Warning: Differentiator could not find f'(%f)<EPS\n"; x);
+	printf("Warning: Differentiator could not find f'(%f)<EPS\n", x);
 
 	return dif;
 }
+
+
+

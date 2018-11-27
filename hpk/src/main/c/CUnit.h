@@ -195,3 +195,4 @@ extern void cunit_report_failure(const char* msg);
 #endif
 
 #endif /* _CUNIT_H_ */
+

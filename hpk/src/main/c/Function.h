@@ -36,3 +36,4 @@ public:
     virtual double operator()(double x) const {assert(fp!=0); return (fp(x));};
 };
 #endif /* FUNCTION_H_ */
+

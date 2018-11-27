@@ -27,3 +27,8 @@ double integrate(Function& f, double a, double b, double eps);
 #endif
 
 #endif /* INTEGRATOR_H_ */
+
+
+
+
+
