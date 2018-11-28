@@ -44,7 +44,7 @@ all: hpk
 hpk: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: MacOS X C++ Linker'
-	g++  -o "hpk" $(OBJS) $(USER_OBJS) $(LIBS)
+	g++ -L/Library/Java/JavaVirtualMachines/jdk1.8.0_65.jdk/Contents/Home/jre/lib/server/ -o "hpk" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
