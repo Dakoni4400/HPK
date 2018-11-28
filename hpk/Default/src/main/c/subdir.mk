@@ -5,7 +5,7 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
 ../src/main/c/Differentiator.cpp \
-../src/main/c/main.cpp 
+../src/main/c/DifferentiatorTest.cpp 
 
 C_SRCS += \
 ../src/main/c/CUnit.c 
@@ -13,11 +13,11 @@ C_SRCS += \
 OBJS += \
 ./src/main/c/CUnit.o \
 ./src/main/c/Differentiator.o \
-./src/main/c/main.o 
+./src/main/c/DifferentiatorTest.o 
 
 CPP_DEPS += \
 ./src/main/c/Differentiator.d \
-./src/main/c/main.d 
+./src/main/c/DifferentiatorTest.d 
 
 C_DEPS += \
 ./src/main/c/CUnit.d 
