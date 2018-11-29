@@ -19,25 +19,27 @@ private:
 	jmethodID fct;       // the Java method
 	jstring   jname;     // the Java function name
 	jdoubleArray array;  // the Java array as argument
+
 public:
 	/**
 	 * Constructor to wrap a Java Function implementation.
 	 */
-	//JavaFunction(JNIEnv *env,jobject instance);
 	JavaFunction(JNIEnv *_env,jobject _instance)
-		{
-			env = _env;
-			instance = _instance;
-			jclass clazz = env->GetObjectClass(instance);
-			fct = env->GetMethodID(clazz,"eval","(D)D");
-		}
+	{
+		env = _env;
+		instance = _instance;
+		jclass clazz = env->GetObjectClass(instance);
+		jname = (jstring)"f";
+		fct = env->GetMethodID(clazz,"eval","([D)D");
+		array = env->NewDoubleArray((jsize)1);
+	}
 
 	virtual ~JavaFunction(){}
 	// overloaded operator to execute  double y = f(x)
 	// for java functions implementations.
 	virtual double operator()(double x) const {
 		// our C++ functions are one dimensional the java function not...
-        env->SetDoubleArrayRegion(array,0,1,&x);
+		env->SetDoubleArrayRegion(array,0,1,&x);
         return (env->CallDoubleMethod(instance,fct,array));
 	}
 };

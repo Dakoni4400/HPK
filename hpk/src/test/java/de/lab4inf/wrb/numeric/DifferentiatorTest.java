@@ -13,7 +13,7 @@ import de.lab4inf.wrb.Function;
 import de.lab4inf.wrb.Script;
 import de.lab4inf.wrb.WRBScript;
 
-public class NumericTest {
+public class DifferentiatorTest {
 	//Array to hold the x-values for testing
 	protected ArrayList<Double> values;
 
@@ -49,11 +49,17 @@ public class NumericTest {
 		values.add(0.50);
 		values.add(0.75);
 		values.add(1.00);
+		values.add(Math.PI);
+		values.add(Math.E);
 		myDif = new Differentiator();
 	}
 	
-	protected double getDifferentialValueSin(double x) {
+	protected double sinDif(double x) {
 			return Math.cos(x);
+	}
+	
+	protected double expDif(double x) {
+		return Math.exp(x);
 	}
 	
 	@Test
@@ -64,17 +70,52 @@ public class NumericTest {
 		Function f = script.getFunction("f");
 		assertNotNull(f);
 		
-		System.out.println(String.format("Testing function sin"));
+		System.out.println("Testing function sin(x)\n");
 		System.out.println("    x    |    f(x)  |   f'(x)  ");
 		System.out.println("---------+----------+----------");
 		for(Double value: values)
 		{
-			double x = value;
+			double difVal = 0, x = value;
 			double y = f.eval(x);
-
-			double difVal = myDif.differentiate(myFunc, x);
-			assertEquals(getDifferentialValueSin(x),difVal,EPS);
-
+			try {
+				difVal = myDif.differentiate(f, x);
+				assertEquals(sinDif(x),difVal,EPS);
+			} catch(Exception e) {
+				
+			}
+			
+			/*double integVal = myInteg.integrate(myFunc, 0, x) + getIntegrationConst();
+			assertEquals(integVal,getIntegrationValue(x),EPS);*/
+			
+			System.out.println(String.format("%+-1.5f | %+-1.5f | %+-1.5f", x, y, difVal));			
+		}
+		
+		System.out.println("");
+		System.out.println("");
+	}
+	
+	@Test
+	public void expTest() {
+		String task = "f(x) = exp(x)";
+		script.parse(task);
+		
+		Function f = script.getFunction("f");
+		assertNotNull(f);
+		
+		System.out.println("Testing function exp(x)\n");
+		System.out.println("    x    |    f(x)  |   f'(x)   ");
+		System.out.println("---------+----------+-----------");
+		for(Double value: values)
+		{
+			double difVal = 0, x = value;
+			double y = f.eval(x);
+			try {
+				difVal = myDif.differentiate(f, x);
+				assertEquals(expDif(x),difVal,EPS);
+			} catch(Exception e) {
+				
+			}
+			
 			/*double integVal = myInteg.integrate(myFunc, 0, x) + getIntegrationConst();
 			assertEquals(integVal,getIntegrationValue(x),EPS);*/
 			
