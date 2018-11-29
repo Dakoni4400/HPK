@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -100,6 +99,12 @@ public class DifferentiatorTest {
 	
 	@Test
 	public void lnTest() {
+		values.remove(-4.0);
+		values.remove(-3.0);
+		values.remove(-2.0);
+		values.remove(-1.0);
+		values.remove(0.0);
+		
 		String task = "f(x) = ln(x); df(x) = 1/x";
 		testDifferentiator(task);
 		

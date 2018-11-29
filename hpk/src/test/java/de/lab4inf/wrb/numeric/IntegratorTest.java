@@ -99,7 +99,7 @@ public class IntegratorTest {
 	
 	@Test
 	public void logTest() {
-		String task = "f(x) = 1/x; F(x) = ln(abs(x))";
+		String task = "f(x) = 1/x; F(x) = ln(abs(x));";
 		testIntegrator(task);
 	}
 }
