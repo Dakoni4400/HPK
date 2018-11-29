@@ -30,6 +30,28 @@ public class DifferentiatorTest {
         return new WRBScript();
     }
 	
+	/**
+	 * Mit dieser Funktion kann der Integrator schnell getestet werden. 
+	 * 
+	 * @param task Format: f: Zu testende Funktion; df: zugehörige Ableitungsfunktion
+	 */
+	protected void testDifferentiator(String task) {
+		script.parse(task);
+		
+		Function f = script.getFunction("f");
+		assertNotNull(f);
+		Function df = script.getFunction("df");
+		assertNotNull(df);
+		
+		for(Double value: values)
+		{
+			double difVal = 0, x = value;
+
+			difVal = d.differentiate(f, x);
+			assertEquals(df.eval(x),difVal,EPS);		
+		}
+	}
+	
 	@Before
 	/**
 	 * setup before test, create Differentiator and Integrator objects and add default values
@@ -48,82 +70,27 @@ public class DifferentiatorTest {
 		d = new Differentiator();
 	}
 	
-	protected double sinDif(double x) {
-			return Math.cos(x);
-	}
-	
-	protected double expDif(double x) {
-		return Math.exp(x);
-	}
-	
 	@Test
 	public void sinTest() {
-		String task = "f(x) = sin(x)";
-		script.parse(task);
-		
-		Function f = script.getFunction("f");
-		assertNotNull(f);
-		for(Double value: values)
-		{
-			double difVal = 0, x = value;
-			
-			difVal = d.differentiate(f, x);
-			assertEquals(sinDif(x),difVal,EPS);		
-		}
+		String task = "f(x) = sin(x); df(x) = cos(x)";
+		testDifferentiator(task);
 	}
 	
 	@Test
 	public void expTest() {
-		String task = "f(x) = exp(x)";
-		script.parse(task);
-		
-		Function f = script.getFunction("f");
-		assertNotNull(f);
-	
-		for(Double value: values)
-		{
-			double difVal = 0, x = value;
-
-			difVal = d.differentiate(f, x);
-			assertEquals(expDif(x),difVal,EPS);		
-		}
+		String task = "f(x) = exp(x); df = exp(x)";
+		testDifferentiator(task);
 	}
 	
 	@Test
 	public void squareTest() {
 		String task = "f(x) = x**2; df(x) = 2*x;";
-		script.parse(task);
-		
-		Function f = script.getFunction("f");
-		assertNotNull(f);
-		Function df = script.getFunction("df");
-		assertNotNull(df);
-		
-		for(Double value: values)
-		{
-			double difVal = 0, x = value;
-
-			difVal = d.differentiate(f, x);
-			assertEquals(df.eval(x),difVal,EPS);		
-		}
+		testDifferentiator(task);
 	}
 	
 	@Test
 	public void bigFunctionTest() {
 		String task = "f(x) = 2*x**3-4*x**2-2*x+3; df(x) = 6*x**2-8*x-2;";
-		script.parse(task);
-		
-		Function f = script.getFunction("f");
-		assertNotNull(f);
-		Function df = script.getFunction("df");
-		assertNotNull(df);
-		
-		for(Double value: values)
-		{
-			double difVal = 0, x = value;
-
-			difVal = d.differentiate(f, x);
-			assertEquals(df.eval(x),difVal,EPS);		
-		}
+		testDifferentiator(task);
 	}
 }

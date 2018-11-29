@@ -33,6 +33,28 @@ public class IntegratorTest {
 		return F.eval(b) - F.eval(a);
 	}
 	
+	/**
+	 * Mit dieser Funktion kann der Integrator schnell getestet werden. 
+	 * 
+	 * @param task Format: f: Zu testende Funktion; F: zugehörige Stammfunktion
+	 */
+	protected void testIntegrator(String task) {
+		script.parse(task);
+		
+		Function f = script.getFunction("f");
+		assertNotNull(f);
+		Function F = script.getFunction("F");
+		assertNotNull(F);
+		
+		for(Double value: values)
+		{
+			double a = value, b = value + 1.;
+			
+			double intVal = i.integrate(f, a, b);
+			assertEquals(getIntegralResult(F,a,b),intVal,EPS);	
+		}
+	}
+	
 	@Before
 	/**
 	 * setup before test, create Differentiator and Integrator objects and add default values
@@ -51,38 +73,12 @@ public class IntegratorTest {
 	@Test
 	public void sinTest() {
 		String task = "f(x) = sin(x); F(x) = -1.0*cos(x);";
-		script.parse(task);
-		
-		Function f = script.getFunction("f");
-		assertNotNull(f);
-		Function F = script.getFunction("F");
-		assertNotNull(F);
-		
-		for(Double value: values)
-		{
-			double a = value, b = value + 1.;
-			
-			double intVal = i.integrate(f, a, b);
-			assertEquals(getIntegralResult(F,a,b),intVal,EPS);	
-		}
+		testIntegrator(task);
 	}
 	
 	@Test
 	public void squareTest() {
 		String task = "f(x) = x**2; F(x) = (1/3) * x**3;";
-		script.parse(task);
-		
-		Function f = script.getFunction("f");
-		assertNotNull(f);
-		Function F = script.getFunction("F");
-		assertNotNull(F);
-		
-		for(Double value: values)
-		{
-			double a = value, b = value + 1.;
-			
-			double intVal = i.integrate(f, a, b);
-			assertEquals(getIntegralResult(F,a,b),intVal,EPS);	
-		}	
+		testIntegrator(task);
 	}
 }
