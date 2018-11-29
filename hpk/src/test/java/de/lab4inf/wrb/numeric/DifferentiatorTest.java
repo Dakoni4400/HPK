@@ -78,7 +78,7 @@ public class DifferentiatorTest {
 	
 	@Test
 	public void expTest() {
-		String task = "f(x) = exp(x); df = exp(x)";
+		String task = "f(x) = exp(x); df(x) = exp(x)";
 		testDifferentiator(task);
 	}
 	
