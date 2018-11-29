@@ -188,6 +188,11 @@ public class TreeBuilder {
 					child.add(buildTree(ctx.function().mathFunction().e));
 					return new SqrtNode(child, child.get(0).getParams());
 				}
+				if(ctx.function().mathFunction().ABS() != null) {
+					ArrayList<AstNode> child = new ArrayList<>();
+					child.add(buildTree(ctx.function().mathFunction().e));
+					return new AbsNode(child, child.get(0).getParams());
+				}
 			}
 		}
 		
