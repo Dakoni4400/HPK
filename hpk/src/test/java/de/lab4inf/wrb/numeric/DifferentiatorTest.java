@@ -89,5 +89,41 @@ public class DifferentiatorTest {
 		}
 	}
 	
+	@Test
+	public void squareTest() {
+		String task = "f(x) = x**2; df(x) = 2*x;";
+		script.parse(task);
+		
+		Function f = script.getFunction("f");
+		assertNotNull(f);
+		Function df = script.getFunction("df");
+		assertNotNull(df);
+		
+		for(Double value: values)
+		{
+			double difVal = 0, x = value;
+
+			difVal = d.differentiate(f, x);
+			assertEquals(df.eval(x),difVal,EPS);		
+		}
+	}
 	
+	@Test
+	public void bigFunctionTest() {
+		String task = "f(x) = 2*x**3-4*x**2-2*x+3; df(x) = 6*x**2-8*x-2;";
+		script.parse(task);
+		
+		Function f = script.getFunction("f");
+		assertNotNull(f);
+		Function df = script.getFunction("df");
+		assertNotNull(df);
+		
+		for(Double value: values)
+		{
+			double difVal = 0, x = value;
+
+			difVal = d.differentiate(f, x);
+			assertEquals(df.eval(x),difVal,EPS);		
+		}
+	}
 }
