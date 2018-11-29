@@ -12,7 +12,7 @@
 #include "Integrator.h"
 #include "CUnit.h"
 
-#define EPS 1.E-5
+#define EPS 1.E-8
 
 //CUnitTestSuite suite;
 

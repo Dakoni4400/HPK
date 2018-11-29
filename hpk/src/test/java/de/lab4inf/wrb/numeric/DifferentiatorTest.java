@@ -107,9 +107,5 @@ public class DifferentiatorTest {
 		
 		String task = "f(x) = ln(x); df(x) = 1/x";
 		testDifferentiator(task);
-		
-		task = "f(x) = ln(3*x); df(x) = 1/x";
-		testDifferentiator(task);
 	}
-	
 }

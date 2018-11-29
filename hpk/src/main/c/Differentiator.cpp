@@ -23,7 +23,7 @@ double differentiate(Function& f, double x, double err) {
 	difPrevious = (16 * approxF(f, 1.0, x) - approxF2H(f, 1.0, x)) / 15;
 
 	for(n = 2; n < 1000; n++) {
-		h = 1.0 / n;
+		h = 1.0 / (16*n);
 		dif = (16 * approxF(f, h, x) - approxF2H(f, h, x)) / 15;
 
 		if(fabs(dif - difPrevious) < err) {

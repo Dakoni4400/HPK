@@ -9,7 +9,7 @@
 #include "Differentiator.h"
 #include "JavaFunction.h"
 
-#define EPS 1.E-9
+#define EPS 1.E-8
 
 JNIEXPORT jdouble JNICALL Java_de_lab4inf_wrb_numeric_Differentiator_differentiate
   (JNIEnv * env, jobject _this, jobject f, jdouble x) {
