@@ -63,10 +63,7 @@ public class IntegratorTest {
 	{
 		script = getScript();
 		values = new ArrayList<Double>();
-		values.add(1.00);
-		values.add(2.00);
-		values.add(3.00);
-		values.add(4.00);
+		
 		i = new Integrator();
 	}
 	
@@ -79,6 +76,30 @@ public class IntegratorTest {
 	@Test
 	public void squareTest() {
 		String task = "f(x) = x**2; F(x) = (1/3) * x**3;";
+		testIntegrator(task);
+	}
+	
+	@Test
+	public void constantTest() {
+		String task = "f(x) = 1; F(x) = x";
+		testIntegrator(task);
+	}
+	
+	@Test
+	public void sqrtTest() {
+		String task = "f(x) = sqrt(x); F(x) = (2/3)*x**(3/2)";
+		testIntegrator(task);
+	}
+	
+	@Test
+	public void negExpTest() {
+		String task = "f(x) = -1/x**2; F(x) = 1/x";
+		testIntegrator(task);
+	}
+	
+	@Test
+	public void logTest() {
+		String task = "f(x) = 1/x; F(x) = ln(abs(x))";
 		testIntegrator(task);
 	}
 }

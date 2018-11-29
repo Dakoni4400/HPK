@@ -60,6 +60,10 @@ public class DifferentiatorTest {
 	{
 		script = getScript();
 		values = new ArrayList<Double>();
+		values.add(-4.00);
+		values.add(-3.00);
+		values.add(-2.00);
+		values.add(-1.00);
 		values.add(0.00);
 		values.add(0.25);
 		values.add(0.50);
@@ -93,4 +97,14 @@ public class DifferentiatorTest {
 		String task = "f(x) = 2*x**3-4*x**2-2*x+3; df(x) = 6*x**2-8*x-2;";
 		testDifferentiator(task);
 	}
+	
+	@Test
+	public void lnTest() {
+		String task = "f(x) = ln(x); df(x) = 1/x";
+		testDifferentiator(task);
+		
+		task = "f(x) = ln(3*x); df(x) = 1/x";
+		testDifferentiator(task);
+	}
+	
 }
