@@ -183,6 +183,11 @@ public class TreeBuilder {
 					child.add(buildTree(ctx.function().mathFunction().e));
 					return new LogNode(child, child.get(0).getParams());
 				}
+				if(ctx.function().mathFunction().SQRT() != null) {
+					ArrayList<AstNode> child = new ArrayList<>();
+					child.add(buildTree(ctx.function().mathFunction().e));
+					return new SqrtNode(child, child.get(0).getParams());
+				}
 			}
 		}
 		
