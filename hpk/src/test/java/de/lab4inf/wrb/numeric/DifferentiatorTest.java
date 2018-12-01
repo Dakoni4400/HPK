@@ -47,9 +47,22 @@ public class DifferentiatorTest {
 			double difVal = 0, x = value;
 
 			difVal = d.differentiate(f, x);
-			assertEquals(df.eval(x),difVal,EPS);		
+			assertEquals(df.eval(x),difVal,rEps(df.eval(x)));		
 		}
 	}
+	
+	/**
+     * Calculate the relative or absolute tolerated error.
+     * 
+     * @param f the true function value to check for
+     * @return the maximal tolerance
+     */
+    protected final double rEps(final double f) {
+        double a = Math.abs(f), rEps = EPS;
+        if ((0 < a && a < 0.1) || a > 1)
+            rEps *= a;
+        return rEps;
+    }
 	
 	@Before
 	/**
@@ -71,6 +84,7 @@ public class DifferentiatorTest {
 		values.add(Math.PI);
 		values.add(Math.E);
 		d = new Differentiator();
+		d.setError(EPS);
 	}
 	
 	@Test

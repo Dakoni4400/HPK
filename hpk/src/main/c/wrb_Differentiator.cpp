@@ -9,10 +9,30 @@
 #include "Differentiator.h"
 #include "JavaFunction.h"
 
-#define EPS 1.E-8
-
 JNIEXPORT jdouble JNICALL Java_de_lab4inf_wrb_numeric_Differentiator_differentiate
   (JNIEnv * env, jobject _this, jobject f, jdouble x) {
+	jfieldID fid;
+	jdouble err;
+	jdouble y;
+
 	JavaFunction func = JavaFunction(env, f);
-	return differentiate(func, x, EPS);
+
+	jclass clazz = env->GetObjectClass(_this);
+	fid = env->GetFieldID(clazz, "error", "D");
+	if(fid == NULL) {
+		return 0; //failed to read error field
+	}
+	err = env->GetDoubleField(_this, fid);
+
+	try {
+		y = differentiate(func, x, err);
+	} catch (...) {
+		jclass newExcCls = env->FindClass("java/lang/ArithmeticException");
+		if(newExcCls == 0)
+			return 0;
+		env->ThrowNew(newExcCls, "no convergence");
+	}
+
+	return y;
+
 }

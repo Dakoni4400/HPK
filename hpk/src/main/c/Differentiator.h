@@ -18,7 +18,7 @@ extern "C" {
  * @param x argument
  * @return value f'(x)
  */
-double differentiate(Function& f, double x, double err);
+double differentiate(Function& f, double x, double err) throw(int);
 
 #ifdef __cplusplus
 }

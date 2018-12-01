@@ -1,61 +1,57 @@
-#include <stdio.h>
-#include <math.h>
 #include "Integrator.h"
+#include <math.h>
+#include <stdio.h>
 
+#define NMAX 1024
 
-
-inline double simpsonsRule(Function &f, double a, double b, int n)
-{
-	double xi, xi_1;
-	double result=0;
-
-	double dX = (b-a)/(1.0*n);
-
-	xi_1 = a;
-
-	for(int i=0;i<n;i++)
-	{
-		xi  = xi_1;
-		xi_1+= dX;
-
-		result += f(xi_1);
-		result += 4*f((xi + xi_1)/2.0);
-		result += f(xi);
-	}
-
-	result *= (b-a)/(6.0*n);
-
-	return result;
+inline bool isConvergent(double new_result, double old_result, int n, int n_max, double eps) {
+    //Check absolute error
+    if (fabs(new_result - old_result) < eps) {
+        return true;
+    }
+    //check rel error
+    if (fabs(new_result - old_result) < (eps * fabs(new_result - old_result)) / 2) {
+        return true;
+    }
+    if (n > n_max) {
+        throw 0;
+    }
+    return false;
 }
 
-/**
-	*             b
-	*			 /
-	* Calculate / f(t) dt
-	*          /
-	*         a
-	*/
-double integrate(Function &f, double a, double b, double EPS)
-{
-	int n;
-	double dif;
-	double difPrevious;
+double simpsonRule(Function &f, double a, double b, int n) {
+	double sum1 = 0, sum2 = 0, xj = 0, xj1 = 0;
+	double fa, fb, h;
+	fa = f(a);
+	fb = f(b);
 
-	difPrevious = simpsonsRule(f,a,b,1);
+	h = (b - a) / n;
+    sum1 = 0;
+    sum2 = 0;
 
-	for(n=2;n<100;n++)
-	{
-		dif = simpsonsRule(f,a,b,n);
-
-		if(fabs(difPrevious - dif)<EPS)
-		{
-			return dif;
-		}
-
-		difPrevious = dif;
+    for (int j = 1; j <= n - 1; j++) {
+    	xj = a + h * j;
+		sum1 += f(xj);
 	}
 
-	printf("This would be a warning, because the function could not find F(x)<EPS for a=%f and b=%f\n",a,b);
+	for (int j = 0; j <= n - 1; j++) {
+		xj = a + h * j;
+		xj1 = a + h * (j + 1);
+		sum2 += f((xj + xj1) / 2);
+	}
 
-	return dif;
-};
+	return ((b - a) / (6 * n)) * (fa + fb + (2 * sum1) + (4 * sum2));
+}
+
+double integrate(Function &f, double a, double b, double eps) throw(int){
+    double new_result = 0, old_result = 0;
+    int n = 2;
+
+    do {
+        old_result = new_result;
+        new_result = simpsonRule(f, a, b, n);
+        n = n * 2;
+
+    } while (!isConvergent(new_result, old_result, n, NMAX, eps));
+    return new_result;
+}

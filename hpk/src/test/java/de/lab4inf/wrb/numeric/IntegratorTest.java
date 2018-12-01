@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNotNull;
 import java.util.ArrayList;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import de.lab4inf.wrb.Function;
@@ -51,9 +52,22 @@ public class IntegratorTest {
 			double a = value, b = value + 1.;
 			
 			double intVal = i.integrate(f, a, b);
-			assertEquals(getIntegralResult(F,a,b),intVal,EPS);	
+			assertEquals(getIntegralResult(F,a,b),intVal,rEps(getIntegralResult(F,a,b)));	
 		}
 	}
+	
+	/**
+     * Calculate the relative or absolute tolerated error.
+     * 
+     * @param f the true function value to check for
+     * @return the maximal tolerance
+     */
+    protected final double rEps(final double f) {
+        double a = Math.abs(f), rEps = EPS;
+        if ((0 < a && a < 0.1) || a > 1)
+            rEps *= a;
+        return rEps;
+    }
 	
 	@Before
 	/**
@@ -63,8 +77,17 @@ public class IntegratorTest {
 	{
 		script = getScript();
 		values = new ArrayList<Double>();
-		
+		values.add(-4.00);
+		values.add(-3.00);
+		values.add(-2.00);
+		values.add(-1.00);
+		values.add(0.00);
+		values.add(0.25);
+		values.add(0.50);
+		values.add(0.75);
+		values.add(1.00);
 		i = new Integrator();
+		i.setEps(EPS);
 	}
 	
 	@Test
@@ -87,6 +110,10 @@ public class IntegratorTest {
 	
 	@Test
 	public void sqrtTest() {
+		values.remove(-4.0);
+		values.remove(-3.0);
+		values.remove(-2.0);
+		values.remove(-1.0);
 		String task = "f(x) = sqrt(x); F(x) = (2/3)*x**(3/2)";
 		testIntegrator(task);
 	}
@@ -99,6 +126,12 @@ public class IntegratorTest {
 	
 	@Test
 	public void logTest() {
+		values.remove(-4.0);
+		values.remove(-3.0);
+		values.remove(-2.0);
+		values.remove(-1.0);
+		values.remove(0.0);
+		
 		String task = "f(x) = 1/x; F(x) = ln(abs(x));";
 		testIntegrator(task);
 	}

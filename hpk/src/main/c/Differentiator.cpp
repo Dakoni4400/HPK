@@ -1,42 +1,27 @@
-#include <stdio.h>
-#include <math.h>
 #include "Differentiator.h"
+#include <math.h>
 
-double centralDif(Function& f, double h, double x) {
-	return f(x+h)-f(x-h);
+double delta(Function &f, double h, double x) {
+    double result = f(x + h) - f(x - h);
+    return result;
 }
 
-double approxF(Function& f, double h, double x) {
-	return (8 * centralDif(f, h, x) - centralDif(f, 2.*h, x)) / (12. * h);
+double diff_f(Function &f, double h, double x) {
+    return (8 * delta(f, h, x) - delta(f, 2 * h, x)) / (12 * h);
 }
 
-double approxF2H(Function& f, double h, double x) {
-	return (8 * centralDif(f, 2.*h, x) - centralDif(f, 4.*h, x)) / (24. * h);
+double differentiate(Function &f, double x, double err) throw(int){
+    double h = 1.E-4;
+
+    double diff1h = diff_f(f, h, x);
+    double diff2h = diff_f(f, 2 * h, x);
+
+    double result = (16 * diff1h - diff2h) / 15;
+
+    if (fabs(diff1h - diff2h) > err) {
+        result = NAN;
+       throw 0;
+    }
+
+    return result;
 }
-
-double differentiate(Function& f, double x, double err) {
-	int n ;
-	double h;
-	double dif;
-	double difPrevious;
-
-	difPrevious = (16 * approxF(f, 1.0, x) - approxF2H(f, 1.0, x)) / 15;
-
-	for(n = 2; n < 1000; n++) {
-		h = 1.0 / (16*n);
-		dif = (16 * approxF(f, h, x) - approxF2H(f, h, x)) / 15;
-
-		if(fabs(dif - difPrevious) < err) {
-			return dif;
-		}
-
-		difPrevious = dif;
-	}
-
-	printf("Warning: Differentiator could not find f'(%f)=%f<EPS\n", x, dif);
-
-	return dif;
-}
-
-
-
