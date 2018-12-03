@@ -25,22 +25,21 @@ double simpsonRule(Function &f, double a, double b, int n) {
 	fa = f(a);
 	fb = f(b);
 
-	h = (b - a) / n;
+	h = (b - a) / (2 * n);
     sum1 = 0;
     sum2 = 0;
 
     for (int j = 1; j <= n - 1; j++) {
-    	xj = a + h * j;
+    	xj = a + h * (2 * j);
 		sum1 += f(xj);
 	}
 
-	for (int j = 0; j <= n - 1; j++) {
-		xj = a + h * j;
-		xj1 = a + h * (j + 1);
-		sum2 += f((xj + xj1) / 2);
+	for (int j = 1; j <= n; j++) {
+		xj1 = a + h * (2 * j - 1);
+		sum2 += f(xj1);
 	}
 
-	return ((b - a) / (6 * n)) * (fa + fb + (2 * sum1) + (4 * sum2));
+	return (h / 3) * (fa + fb + (2 * sum1) + (4 * sum2));
 }
 
 double integrate(Function &f, double a, double b, double eps) throw(int){
