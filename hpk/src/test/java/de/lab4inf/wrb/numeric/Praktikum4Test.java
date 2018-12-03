@@ -244,6 +244,7 @@ public abstract class Praktikum4Test {
         for (x = a; x < b; x += 0.25) {
             z = iP.eval(x) - iP.eval(a);
             calls = 0;
+            System.out.println(x);
             y = intg.integrate(p, a, x, eps);
             assertEquals(z, y, rEps(z));
             assertTrue(format(INTEGRATOR_TOO_MANY_FUNCTION_CALLS, calls), calls <= CALLS_INTEGRATOR);
