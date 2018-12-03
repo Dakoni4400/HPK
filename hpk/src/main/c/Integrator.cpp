@@ -19,13 +19,9 @@ inline bool isConvergent(double new_result, double old_result, int n, int n_max,
     return false;
 }
 
-double simpsonRule(Function &f, double a, double b, int n) {
+double simpsonRule(Function &f, double a, double b, int n, double h) {
 	double sum1 = 0, sum2 = 0, xj = 0, xj1 = 0;
-	double fa, fb, h;
-	fa = f(a);
-	fb = f(b);
 
-	h = (b - a) / (2 * n);
     sum1 = 0;
     sum2 = 0;
 
@@ -39,16 +35,20 @@ double simpsonRule(Function &f, double a, double b, int n) {
 		sum2 += f(xj1);
 	}
 
-	return (h / 3) * (fa + fb + (2 * sum1) + (4 * sum2));
+	return (2 * sum1) + (4 * sum2);
 }
 
 double integrate(Function &f, double a, double b, double eps) throw(int){
     double new_result = 0, old_result = 0;
     int n = 2;
+    double fa, fb, h;
+    fa = f(a);
+    fb = f(b);
 
     do {
+    	h = (b - a) / (2 * n);
         old_result = new_result;
-        new_result = simpsonRule(f, a, b, n);
+        new_result = (h / 3) * (fa + fb + simpsonRule(f, a, b, n, h));
         n = n * 2;
 
     } while (!isConvergent(new_result, old_result, n, NMAX, eps));
