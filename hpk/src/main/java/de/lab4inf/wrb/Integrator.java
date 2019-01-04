@@ -1,4 +1,4 @@
-package de.lab4inf.wrb.numeric;
+package de.lab4inf.wrb;
 
 import de.lab4inf.wrb.Function;
 

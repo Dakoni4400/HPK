@@ -1,4 +1,4 @@
-package de.lab4inf.wrb.numeric;
+package de.lab4inf.wrb;
 
 import de.lab4inf.wrb.Function;
 
@@ -21,7 +21,7 @@ public class Differentiator {
 	public native double differentiate( final Function fct, final double x) throws ArithmeticException;
 	
 	public double differentiate( final Function fct, final double x, final double err) throws ArithmeticException{
-		this.error = err;
+		error = err;
 		return differentiate(fct, x);
 	}
 }

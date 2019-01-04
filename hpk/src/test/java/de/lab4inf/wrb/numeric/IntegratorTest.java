@@ -10,6 +10,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import de.lab4inf.wrb.Function;
+import de.lab4inf.wrb.Integrator;
 import de.lab4inf.wrb.Script;
 import de.lab4inf.wrb.WRBScript;
 
@@ -70,9 +71,6 @@ public class IntegratorTest {
     }
 	
 	@Before
-	/**
-	 * setup before test, create Differentiator and Integrator objects and add default values
-	 */
 	public void setUp()
 	{
 		script = getScript();
@@ -105,22 +103,6 @@ public class IntegratorTest {
 	@Test
 	public void constantTest() {
 		String task = "f(x) = 1; F(x) = x";
-		testIntegrator(task);
-	}
-	
-	@Test
-	public void sqrtTest() {
-		values.remove(-4.0);
-		values.remove(-3.0);
-		values.remove(-2.0);
-		values.remove(-1.0);
-		String task = "f(x) = sqrt(x); F(x) = (2/3)*x**(3/2)";
-		testIntegrator(task);
-	}
-	
-	@Test
-	public void negExpTest() {
-		String task = "f(x) = -1/x**2; F(x) = 1/x";
 		testIntegrator(task);
 	}
 	

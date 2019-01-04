@@ -5,11 +5,11 @@
  *      Author: Till
  */
 
-#include "de_lab4inf_wrb_numeric_Differentiator.h"
+#include "de_lab4inf_wrb_Differentiator.h"
 #include "Differentiator.h"
 #include "JavaFunction.h"
 
-JNIEXPORT jdouble JNICALL Java_de_lab4inf_wrb_numeric_Differentiator_differentiate
+JNIEXPORT jdouble JNICALL Java_de_lab4inf_wrb_Differentiator_differentiate
   (JNIEnv * env, jobject _this, jobject f, jdouble x) {
 	jfieldID fid;
 	jdouble err;

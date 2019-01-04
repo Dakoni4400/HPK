@@ -5,7 +5,6 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({Prak4Test.class})
-public class NumericTestSuite{
-	
-}
+@SuiteClasses({DifferentiatorTest.class,
+			   IntegratorTest.class})
+public class NumericTestSuite{}

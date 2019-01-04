@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import de.lab4inf.wrb.Differentiator;
 import de.lab4inf.wrb.Function;
 import de.lab4inf.wrb.Script;
 import de.lab4inf.wrb.WRBScript;
@@ -65,9 +66,6 @@ public class DifferentiatorTest {
     }
 	
 	@Before
-	/**
-	 * setup before test, create Differentiator and Integrator objects and add default values
-	 */
 	public void setUp()
 	{
 		script = getScript();

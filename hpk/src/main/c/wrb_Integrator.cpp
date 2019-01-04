@@ -5,11 +5,11 @@
  *      Author: Till
  */
 
-#include "de_lab4inf_wrb_numeric_Integrator.h"
+#include "de_lab4inf_wrb_Integrator.h"
 #include "Integrator.h"
 #include "JavaFunction.h"
 
-JNIEXPORT jdouble JNICALL Java_de_lab4inf_wrb_numeric_Integrator_integrate
+JNIEXPORT jdouble JNICALL Java_de_lab4inf_wrb_Integrator_integrate
   (JNIEnv * env, jobject _this, jobject f, jdouble a, jdouble b) {
 	jfieldID fid;
 	jdouble eps;
