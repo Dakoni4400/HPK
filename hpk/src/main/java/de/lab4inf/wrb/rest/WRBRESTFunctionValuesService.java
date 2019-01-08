@@ -34,18 +34,6 @@ public class WRBRESTFunctionValuesService extends AbstractWRBService {
 		sb.append("<body style=\"padding: 0 20px;\"><h1>Function Values</h1>");
 		sb.append("<p>Definition: " + definition + "</p>");
 		
-		
-		try {
-			script.parse(definition);
-		} catch(Exception e) {
-			sb.append("<div class=\"alert alert-danger\" role=\"alert\">" + 
-					"  Es ist ein Fehler bei der URL Formatierung aufgetreten!\n" + 
-					"</div></body></html>");
-			
-			String retValue = sb.toString();
-			return retValue;
-		}
-		
 		double xmin = script.getVariable("xmin"); 
 		double xmax = script.getVariable("xmax");
 		double dx = script.getVariable("dx");
@@ -56,10 +44,13 @@ public class WRBRESTFunctionValuesService extends AbstractWRBService {
 			sb.append("<table class=\"table\">");
 			sb.append("<thead><tr><th scope=\"col\">x</th><th scope=\"col\">" + function + "(x)</th></tr></thead>");
 			sb.append("<tbody>");
-		
-			for(double i = xmin; i <= xmax; i += dx) {
-				double val = script.getFunction(function).eval(i);
-				sb.append("<tr><td>" + i + "</td><td>" + round(val, format) +"</td></tr>");
+			
+			String result = getValues(function, definition, format);
+			
+			String[] resArray = result.split(",");
+			
+			for(int i = 0; i < resArray.length; i += 2) {
+				sb.append("<tr><td>" + resArray[i] + "</td><td>" + resArray[i+1] +"</td></tr>");
 			}
 		
 			sb.append("</tbody>");

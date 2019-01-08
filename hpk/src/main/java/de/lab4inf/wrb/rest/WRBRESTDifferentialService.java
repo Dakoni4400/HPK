@@ -1,12 +1,10 @@
 package de.lab4inf.wrb.rest;
 
 import de.lab4inf.wrb.Differentiator;
-import de.lab4inf.wrb.Function;
 import de.lab4inf.wrb.WRBScript;
 
 import javax.ws.rs.Path;
 
-import java.net.URLEncoder;
 import java.util.Locale;
 
 import javax.ws.rs.Consumes;
@@ -38,22 +36,8 @@ public class WRBRESTDifferentialService extends AbstractWRBService {
 		sb.append("<!DOCTYPE html><html><head><link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css'><title>WRB Differential</title></head>");
 		sb.append("<body style=\"padding: 0 20px;\"><h1>Differential</h1>");
 		
-		try {
-			script.parse(definition);
-		} catch(Exception e) {
-			sb.append("<div class=\"alert alert-danger\" role=\"alert\">" + 
-					"  Es ist ein Fehler bei der URL Formatierung aufgetreten!\n" + 
-					"</div></body></html>");
-			
-			String retValue = sb.toString();
-			return retValue;
-		} 
-		
-		double x = script.getVariable("x");
-		
 		try {			
-				double val = dif.differentiate(script.getFunction(function), x, 1.E-20);
-				sb.append("<p>" + function + "'(x) = " + round(val, format) + "</p>");
+				sb.append("<p>" + function + "'(x) = " + getDifferential(function, definition, format) + "</p>");
 		} catch(Exception e) {
 			
 			sb.append("<div class=\"alert alert-danger\" role=\"alert\">" + 
