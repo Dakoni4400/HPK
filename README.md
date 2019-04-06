@@ -6,3 +6,5 @@ Praktikum beeinhaltete folgende Aufgaben:
  3. Parallele Matrixmultiplikation mit drei verschiedenen Alogrithmen
  4. Numerisches Differenzieren und Integrieren mit Hilfe von Java Native Calls
  5. Verteilter Web Service mittels RESTful WebServices
+
+Richtig eingebunden laufen alle JUnit Tests
