@@ -34,13 +34,7 @@ public class WRBRESTFunctionValuesService extends AbstractWRBService {
 		sb.append("<body style=\"padding: 0 20px;\"><h1>Function Values</h1>");
 		sb.append("<p>Definition: " + definition + "</p>");
 		
-		double xmin = script.getVariable("xmin"); 
-		double xmax = script.getVariable("xmax");
-		double dx = script.getVariable("dx");
-		
-		try {
-			sb.append("<p>Values are: xmin = " + xmin + ", xmax = " + xmax + ", dx = " + dx + "</p>");
-		
+		try {		
 			sb.append("<table class=\"table\">");
 			sb.append("<thead><tr><th scope=\"col\">x</th><th scope=\"col\">" + function + "(x)</th></tr></thead>");
 			sb.append("<tbody>");

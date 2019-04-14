@@ -177,7 +177,6 @@ public abstract class AbstractWRBClientTester {
 
     protected String generateDifferentialDefinition(String fctName, String fctBody, double x, String fmt) {
         String sx = format(locale, "%s=" + fmt, "x", x);
-        System.err.println("sx: " + sx);
         String definition = format("%s; %s", sx, fctBody);
         return definition;
     }

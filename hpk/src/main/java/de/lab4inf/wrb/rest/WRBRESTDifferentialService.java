@@ -73,7 +73,6 @@ public class WRBRESTDifferentialService extends AbstractWRBService {
 		
 		double x = script.getVariable("x");
 		double val = dif.differentiate(script.getFunction(function), x);
-		System.out.println(val);
 		sb.append(round(val, format));
 		
 		String retValue = sb.toString();
@@ -81,9 +80,7 @@ public class WRBRESTDifferentialService extends AbstractWRBService {
 	}
 	
 	public double round(double x, String format){
-		System.out.println(format);
         String sx = String.format(Locale.US, format, x);
-        System.out.println(sx);
         double fx = Double.parseDouble(sx);
         return fx;
     }

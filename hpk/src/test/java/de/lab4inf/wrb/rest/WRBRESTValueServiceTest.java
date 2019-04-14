@@ -34,8 +34,6 @@ public class WRBRESTValueServiceTest extends AbstractWRBServiceTester {
 		Function fct = getFunction("f", "f(x)=2*x;");
 		List<Pair<Double>> expVal = expectedValues("f", fct, AbstractWRBService.FMT, 0, 1, 0.1);
 		
-		System.out.println(expVal);
-		
 		String definition = generateFunctionDefinition("f", "f(x)=2*x");
 		String result = submitValueRequest("f", definition);
 		

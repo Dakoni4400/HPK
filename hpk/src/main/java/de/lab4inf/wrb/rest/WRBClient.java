@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Locale;
 
 public class WRBClient extends AbstractWRBClient {
+	private static final String FMT = "%.6f";
+	
 	/**
 	 * @param hostUrl
 	 */
@@ -33,19 +35,7 @@ public class WRBClient extends AbstractWRBClient {
 	}
 	
 	public List<Double> getEvaluation(String functionName, String definition) throws Exception {
-		functionName = URLEncoder.encode(functionName, "UTF-8");
-		definition = URLEncoder.encode(definition, "UTF-8");
-		String path = format("WRBService/evaluate?fct=%s&def=%s", functionName, definition);
-		String ret = submitRequest(path);
-		String[] values = ret.split(",");
-		
-		List<Double> returnList = new ArrayList<>();
-		
-		for(String v : values) {
-			returnList.add(Double.parseDouble(v));
-		}
-		
-		return returnList;
+		return getEvaluation(functionName, definition, FMT);
 	}
 	
 	public double getDifferential(String functionName, String definition, String format) throws Exception{
@@ -53,20 +43,13 @@ public class WRBClient extends AbstractWRBClient {
 		definition = URLEncoder.encode(definition, "UTF-8");
 		format = URLEncoder.encode(format, "UTF-8");
 		String path = format("WRBService/differentiate?fct=%s&def=%s&fmt=%s", functionName, definition, format);
-		System.out.println("Sending request to client on " + path);
 		String ret = submitRequest(path);
 		
 		return Double.parseDouble(ret);
 	}
 	
 	public double getDifferential(String functionName, String definition) throws Exception{
-		functionName = URLEncoder.encode(functionName, "UTF-8");
-		definition = URLEncoder.encode(definition, "UTF-8");
-		String path = format("WRBService/differentiate?fct=%s&def=%s", functionName, definition);
-		System.out.println("Sending request to client on " + path);
-		String ret = submitRequest(path);
-		
-		return Double.parseDouble(ret);
+		return getDifferential(functionName, definition, FMT);
 	}
 	
 	public double getIntegral(String functionName, String definition, String format) throws Exception{
@@ -79,10 +62,6 @@ public class WRBClient extends AbstractWRBClient {
 	}
 	
 	public double getIntegral(String functionName, String definition) throws Exception{
-		functionName = URLEncoder.encode(functionName, "UTF-8");
-		definition = URLEncoder.encode(definition, "UTF-8");
-		String path = format("WRBService/integrate?fct=%s&def=%s", functionName, definition);
-		String ret = submitRequest(path);
-		return Double.parseDouble(ret);
+		return getIntegral(functionName, definition, FMT);
 	}
 }
